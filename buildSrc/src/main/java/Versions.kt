@@ -6,4 +6,5 @@ object Versions{
     const val jUnit = "4.13.2"
     const val testExt = "1.1.5"
     const val expresso = "3.5.1"
+    const val koin = "3.3.3"
 }

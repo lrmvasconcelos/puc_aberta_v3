@@ -32,7 +32,10 @@ android {
 }
 
 dependencies {
+
     implementation AppDependencies.kotlin
+    implementation AppDependencies.koinCore
+    implementation AppDependencies.koinAndroidx
     implementation AppDependencies.appCompat
     implementation AppDependencies.material
     implementation AppDependencies.constraintLayout
