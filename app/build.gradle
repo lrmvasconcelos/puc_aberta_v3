@@ -33,6 +33,8 @@ android {
 
 dependencies {
 
+    implementation project (Modules.presentation)
+
     implementation AppDependencies.kotlin
     implementation AppDependencies.koinCore
     implementation AppDependencies.koinAndroidx

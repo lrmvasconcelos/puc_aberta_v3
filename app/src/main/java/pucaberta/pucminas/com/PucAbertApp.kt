@@ -8,12 +8,11 @@ import org.koin.core.context.startKoin
 class PucAbertApp : Application() {
     override fun onCreate() {
         super.onCreate()
-
         startKoin()
 
     }
 
-    fun startKoin() {
+    private fun startKoin() {
         startKoin {
             androidContext(this@PucAbertApp)
             modules(listOf())

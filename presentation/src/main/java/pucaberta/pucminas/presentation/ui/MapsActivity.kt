@@ -1,8 +1,8 @@
-package pucaberta.pucminas.com.ui
+package pucaberta.pucminas.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import pucaberta.pucminas.com.R
+import pucaberta.pucminas.presentation.R
 
 class MapsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
