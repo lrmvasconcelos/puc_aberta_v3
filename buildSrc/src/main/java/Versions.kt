@@ -7,4 +7,5 @@ object Versions{
     const val testExt = "1.1.5"
     const val expresso = "3.5.1"
     const val koin = "3.3.3"
+    const val maps = "18.1.0"
 }

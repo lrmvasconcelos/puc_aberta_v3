@@ -8,4 +8,5 @@ object AppDependencies {
     const val expresso = "androidx.test.espresso:espresso-core:${Versions.expresso}"
     const val koinAndroidx = "io.insert-koin:koin-android:${Versions.koin}"
     const val koinCore = "io.insert-koin:koin-core:${Versions.koin}"
+    const val maps = "com.google.android.gms:play-services-maps:${Versions.maps}"
 }
