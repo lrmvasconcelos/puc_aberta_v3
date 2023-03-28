@@ -4,18 +4,22 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pucaberta.pucminas.core.PermissionUtils
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
+import pucaberta.pucminas.core.observe
 import pucaberta.pucminas.core.viewBinding
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
@@ -40,26 +44,55 @@ class MapActivity : AppCompatActivity(),
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-        viewModel.loadCommonMarks()
+        setupObservers()
+    }
+
+    private fun setupObservers() = with(viewModel) {
+        observe(commonMarksObserver) {
+            setupMarkers(it)
+        }
+    }
+
+    private fun setupMarkers(markers: List<MarkerOptions>) {
+        markers.forEach {
+            map.addMarker(it)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        googleMap.setOnMyLocationButtonClickListener(this)
-        googleMap.setOnMyLocationClickListener(this)
+        map = googleMap.apply {
+            mapType = GoogleMap.MAP_TYPE_HYBRID
+            isBuildingsEnabled = true
+            isIndoorEnabled = true
+            uiSettings.isZoomControlsEnabled = true
+            setOnMyLocationButtonClickListener(this@MapActivity)
+            setOnMyLocationClickListener(this@MapActivity)
+            moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
+        }
         enableMyLocation()
+        viewModel.loadCommonMarks()
     }
 
+    private fun getCameraPosition(googleMap: GoogleMap) = CameraPosition
+        .builder(googleMap.cameraPosition)
+        .target(viewModel.recepitivo)
+        .bearing(310.toFloat())
+        .zoom(17.toFloat())
+        .build()
+
     override fun onMyLocationButtonClick(): Boolean {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT)
-            .show()
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
+       if(!PermissionUtils.isGPSEnabled(this)){
+           Toast.makeText(
+               this,
+               this.resources.getString(R.string.gps_disable_message),
+               Toast.LENGTH_SHORT
+           ).show()
+       }
         return false
     }
 
     override fun onMyLocationClick(location: Location) {
-        Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
+        Toast.makeText( this, "Current location:\n$location", Toast.LENGTH_LONG)
             .show()
     }
 

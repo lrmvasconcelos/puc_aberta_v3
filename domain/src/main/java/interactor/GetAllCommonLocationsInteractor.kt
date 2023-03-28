@@ -3,7 +3,7 @@ package interactor
 import models.MarkLocation
 import repoInterfaces.MapRepository
 
-class GetAllCommonLocationsRepository(
+class GetAllCommonLocationsInteractor(
     private val repository: MapRepository
 ) {
     operator fun invoke(): List<MarkLocation> = repository.getAllCommonLocations()

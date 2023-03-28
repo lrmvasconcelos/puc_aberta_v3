@@ -1,8 +1,8 @@
 package di
 
-import interactor.GetAllCommonLocationsRepository
+import interactor.GetAllCommonLocationsInteractor
 import org.koin.dsl.module
 
 val domainModule = module{
-    factory { GetAllCommonLocationsRepository(get()) }
+    factory { GetAllCommonLocationsInteractor(get()) }
 }

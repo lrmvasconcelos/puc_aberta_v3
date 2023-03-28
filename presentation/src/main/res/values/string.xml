@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gps_disable_message">"GPS está desabilitado, favor habilitar para que seja possível orientá-lo no campus"</string>
+</resources>

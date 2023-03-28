@@ -17,8 +17,10 @@ import android.Manifest
 import android.Manifest.permission
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -82,6 +84,11 @@ object PermissionUtils {
             }
         }
         return false
+    }
+
+    fun isGPSEnabled(appCompatActivity: AppCompatActivity): Boolean {
+        val locationManager = appCompatActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     /**
