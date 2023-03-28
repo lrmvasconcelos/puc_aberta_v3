@@ -33,17 +33,7 @@ android {
 }
 
 dependencies {
-
-    implementation (project(Modules.core))
-
     implementation(AppDependencies.kotlin)
     implementation(AppDependencies.koinCore)
     implementation(AppDependencies.koinAndroidx)
-    implementation(AppDependencies.appCompat)
-    implementation(AppDependencies.material)
-    implementation(AppDependencies.constraintLayout)
-    implementation(AppDependencies.maps)
-    testImplementation(AppDependencies.junit)
-    androidTestImplementation(AppDependencies.testExt)
-    androidTestImplementation(AppDependencies.expresso)
 }
