@@ -1,5 +1,7 @@
 package repoInterfaces
 
+import models.MarkLocation
+
 interface MapRepository {
-    fun getAllCommonLocations()
+    fun getAllCommonLocations(): List<MarkLocation>
 }

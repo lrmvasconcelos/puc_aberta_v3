@@ -32,3 +32,9 @@ android{
         jvmTarget = AppConfig.kotlinTarget
     }
 }
+
+dependencies{
+    implementation(project(Modules.domain))
+    implementation(AppDependencies.koinCore)
+    implementation(AppDependencies.koinAndroidx)
+}

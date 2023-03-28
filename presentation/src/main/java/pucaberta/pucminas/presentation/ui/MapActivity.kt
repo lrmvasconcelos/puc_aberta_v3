@@ -12,10 +12,13 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import pucaberta.pucminas.core.PermissionUtils
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
+import pucaberta.pucminas.core.viewBinding
 import pucaberta.pucminas.presentation.R
+import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 
 class MapActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
@@ -25,12 +28,19 @@ class MapActivity : AppCompatActivity(),
     private var permissionDenied = false
     private lateinit var map: GoogleMap
 
+    private val viewModel: MapViewModel by viewModel()
+
+    private val binding: MapActivityBinding by viewBinding(
+        MapActivityBinding::inflate
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+        viewModel.loadCommonMarks()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

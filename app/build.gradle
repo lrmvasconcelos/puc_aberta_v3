@@ -35,6 +35,8 @@ android {
 dependencies {
 
     implementation project (Modules.presentation)
+    implementation project (Modules.data)
+    implementation project (Modules.domain)
 
     implementation AppDependencies.kotlin
     implementation AppDependencies.koinCore
