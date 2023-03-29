@@ -6,13 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".ui.registration.RegistrationActivity">
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actvRegisterText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:fontFamily="@font/roboto_regular"
+        android:textSize="16sp"
+        android:textColor="@color/purple_500"
+        android:layout_marginHorizontal="24dp"
+        android:text="@string/register_screen_confirmation_text"
+        app:layout_constraintBottom_toTopOf="@id/btnQrCode"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text=""
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnQrCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_white_stroke"
+        android:gravity="center"
+        android:text="@string/qr_code_button_text"
+        app:layout_constraintBottom_toTopOf="@id/btnGeolocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/actvRegisterText"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnGeolocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_white_stroke"
+        android:gravity="center"
+        android:text="@string/location_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnQrCode" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
