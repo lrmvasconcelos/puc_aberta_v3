@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -51,6 +52,9 @@ class MapActivity : AppCompatActivity(),
         observe(commonMarksObserver) {
             setupMarkers(it)
         }
+        observe(iceiMarksObserver){
+            setupMarkers(it)
+        }
     }
 
     private fun setupMarkers(markers: List<MarkerOptions>) {
@@ -67,10 +71,14 @@ class MapActivity : AppCompatActivity(),
             uiSettings.isZoomControlsEnabled = true
             setOnMyLocationButtonClickListener(this@MapActivity)
             setOnMyLocationClickListener(this@MapActivity)
+            setOnInfoWindowClickListener {
+                Log.d("Click", "Click")
+            }
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
         enableMyLocation()
         viewModel.loadCommonMarks()
+        viewModel.loadICEIMarks()
     }
 
     private fun getCameraPosition(googleMap: GoogleMap) = CameraPosition

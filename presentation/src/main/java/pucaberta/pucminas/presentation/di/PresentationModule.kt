@@ -6,6 +6,6 @@ import pucaberta.pucminas.presentation.ui.MapViewModel
 
 val presentationModule = module {
 
-    viewModel { MapViewModel(get()) }
+    viewModel { MapViewModel(get(), get()) }
 
 }
