@@ -106,44 +106,12 @@ class MapActivity : AppCompatActivity(),
 
     @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+        PermissionUtils.enableMyLocation(
+            activity = this,
+            requestCode = LOCATION_PERMISSION_REQUEST_CODE
         ) {
             map.isMyLocationEnabled = true
-            return
         }
-
-        // 2. If if a permission rationale dialog should be shown
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) || ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        ) {
-            PermissionUtils.RationaleDialog.newInstance(
-                LOCATION_PERMISSION_REQUEST_CODE, true
-            ).show(supportFragmentManager, "dialog")
-            return
-        }
-
-        // 3. Otherwise, request permission
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
-            LOCATION_PERMISSION_REQUEST_CODE
-        )
-        // [END maps_check_location_permission]
     }
 
     override fun onResumeFragments() {

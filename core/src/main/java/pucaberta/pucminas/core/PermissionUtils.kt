@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 
 /**
@@ -89,6 +90,50 @@ object PermissionUtils {
     fun isGPSEnabled(appCompatActivity: AppCompatActivity): Boolean {
         val locationManager = appCompatActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    fun enableMyLocation(
+        activity: AppCompatActivity,
+        requestCode: Int,
+        enableLocationCallback: () -> Unit
+    ){
+        if (ContextCompat.checkSelfPermission(
+                activity,
+                permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                activity,
+                permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            enableLocationCallback.invoke()
+            return
+        }
+
+        // 2. If if a permission rationale dialog should be shown
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                activity,
+                permission.ACCESS_FINE_LOCATION
+            ) || ActivityCompat.shouldShowRequestPermissionRationale(
+                activity,
+                permission.ACCESS_COARSE_LOCATION
+            )
+        ) {
+            PermissionUtils.RationaleDialog.newInstance(
+                requestCode, true
+            ).show(activity.supportFragmentManager, "dialog")
+            return
+        }
+
+        // 3. Otherwise, request permission
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(
+                permission.ACCESS_FINE_LOCATION,
+                permission.ACCESS_COARSE_LOCATION
+            ),
+            requestCode
+        )
+        // [END maps_check_location_permission]
     }
 
     /**
