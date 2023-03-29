@@ -1,4 +1,4 @@
-package pucaberta.pucminas.presentation.ui
+package pucaberta.pucminas.presentation.ui.map
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

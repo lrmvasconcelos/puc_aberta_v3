@@ -1,4 +1,4 @@
-package pucaberta.pucminas.presentation.ui
+package pucaberta.pucminas.presentation.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
