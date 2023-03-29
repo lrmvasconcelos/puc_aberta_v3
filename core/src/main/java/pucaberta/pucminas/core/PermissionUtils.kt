@@ -13,7 +13,6 @@
 // limitations under the License.
 package pucaberta.pucminas.core
 
-import android.Manifest
 import android.Manifest.permission
 import android.app.AlertDialog
 import android.app.Dialog
@@ -32,6 +31,8 @@ import androidx.fragment.app.DialogFragment
  * Utility class for access to runtime permissions.
  */
 object PermissionUtils {
+
+    const val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     /**
      * Requests the fine and coarse location permissions. If a rationale with an additional
@@ -88,15 +89,15 @@ object PermissionUtils {
     }
 
     fun isGPSEnabled(appCompatActivity: AppCompatActivity): Boolean {
-        val locationManager = appCompatActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager =
+            appCompatActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     fun enableMyLocation(
         activity: AppCompatActivity,
-        requestCode: Int,
         enableLocationCallback: () -> Unit
-    ){
+    ) {
         if (ContextCompat.checkSelfPermission(
                 activity,
                 permission.ACCESS_FINE_LOCATION
@@ -118,8 +119,8 @@ object PermissionUtils {
                 permission.ACCESS_COARSE_LOCATION
             )
         ) {
-            PermissionUtils.RationaleDialog.newInstance(
-                requestCode, true
+            RationaleDialog.newInstance(
+                LOCATION_PERMISSION_REQUEST_CODE, true
             ).show(activity.supportFragmentManager, "dialog")
             return
         }
@@ -131,7 +132,7 @@ object PermissionUtils {
                 permission.ACCESS_FINE_LOCATION,
                 permission.ACCESS_COARSE_LOCATION
             ),
-            requestCode
+            LOCATION_PERMISSION_REQUEST_CODE
         )
         // [END maps_check_location_permission]
     }

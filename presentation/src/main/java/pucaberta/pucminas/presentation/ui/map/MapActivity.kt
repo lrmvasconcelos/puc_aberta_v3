@@ -2,14 +2,14 @@ package pucaberta.pucminas.presentation.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pucaberta.pucminas.core.PermissionUtils
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
+import pucaberta.pucminas.core.PermissionUtils.isGPSEnabled
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
 import pucaberta.pucminas.core.observe
 import pucaberta.pucminas.core.viewBinding
@@ -89,7 +90,7 @@ class MapActivity : AppCompatActivity(),
         .build()
 
     override fun onMyLocationButtonClick(): Boolean {
-       if(!PermissionUtils.isGPSEnabled(this)){
+       if(!isGPSEnabled(this)){
            Toast.makeText(
                this,
                this.resources.getString(R.string.gps_disable_message),
@@ -107,8 +108,7 @@ class MapActivity : AppCompatActivity(),
     @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
         PermissionUtils.enableMyLocation(
-            activity = this,
-            requestCode = LOCATION_PERMISSION_REQUEST_CODE
+            activity = this
         ) {
             map.isMyLocationEnabled = true
         }
@@ -128,7 +128,7 @@ class MapActivity : AppCompatActivity(),
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+        if (requestCode != PermissionUtils.LOCATION_PERMISSION_REQUEST_CODE) {
             super.onRequestPermissionsResult(
                 requestCode,
                 permissions,
@@ -163,7 +163,9 @@ class MapActivity : AppCompatActivity(),
     }
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        fun newInstance(context: Context): Intent {
+           return Intent(context, MapActivity::class.java)
+        }
     }
 
 }
