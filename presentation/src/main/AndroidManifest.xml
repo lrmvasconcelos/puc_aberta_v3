@@ -1,12 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pucaberta.pucminas.presentation">
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <application>
-        <activity
-            android:name=".RegistrationActivity"
-            android:exported="false" />
-    </application>
-
+<manifest package="pucaberta.pucminas.presentation">
 </manifest>

@@ -49,6 +49,7 @@ dependencies {
     implementation(AppDependencies.constraintLayout)
     implementation(AppDependencies.maps)
     implementation(AppDependencies.localtionService)
+    implementation(AppDependencies.zxing)
     testImplementation(AppDependencies.junit)
     androidTestImplementation(AppDependencies.testExt)
     androidTestImplementation(AppDependencies.expresso)

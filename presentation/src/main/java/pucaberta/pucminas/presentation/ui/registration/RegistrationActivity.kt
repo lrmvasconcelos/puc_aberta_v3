@@ -2,20 +2,25 @@ package pucaberta.pucminas.presentation.ui.registration
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.journeyapps.barcodescanner.ScanOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pucaberta.pucminas.core.PermissionUtils.LOCATION_PERMISSION_REQUEST_CODE
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
 import pucaberta.pucminas.core.PermissionUtils.enableMyLocation
 import pucaberta.pucminas.core.PermissionUtils.isGPSEnabled
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
+import pucaberta.pucminas.core.camera.QRCodeActivity
+import pucaberta.pucminas.core.camera.setupQrCodeScanner
 import pucaberta.pucminas.core.clickWithDebounce
 import pucaberta.pucminas.core.viewBinding
 import pucaberta.pucminas.presentation.R
@@ -30,6 +35,8 @@ class RegistrationActivity : AppCompatActivity(),
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    private lateinit var qrCodeScanner: ActivityResultLauncher<ScanOptions>
+
     private val viewModel: RegistrationViewModel by viewModel()
 
     private val binding: RegistrationActivityBinding by viewBinding(
@@ -40,12 +47,30 @@ class RegistrationActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        configQrScanner()
         setupClicks()
+    }
+
+    fun configQrScanner() {
+        qrCodeScanner = setupQrCodeScanner {
+            if (it.contents != null) {
+                val builder =
+                    AlertDialog.Builder(this)
+                builder.setTitle("Result")
+                builder.setMessage(it.contents)
+                builder.setPositiveButton(
+                    "OK"
+                ) { dialogInterface, i -> dialogInterface.dismiss() }.show()
+            }
+        }
     }
 
     private fun setupClicks() {
         binding.btnGeolocation.clickWithDebounce {
             checkLocationRequirements()
+        }
+        binding.btnQrCode.setOnClickListener {
+            scanCode()
         }
     }
 
@@ -109,5 +134,15 @@ class RegistrationActivity : AppCompatActivity(),
 
     private fun showMissingPermissionError() {
         newInstance(true).show(supportFragmentManager, "dialog")
+    }
+
+    private fun scanCode() {
+        val options = ScanOptions().apply {
+            setPrompt("Volume up to flash on")
+            setBeepEnabled(true)
+            setOrientationLocked(true)
+            captureActivity = QRCodeActivity::class.java
+        }
+        qrCodeScanner.launch(options)
     }
 }

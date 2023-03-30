@@ -9,4 +9,5 @@ object Versions{
     const val koin = "3.3.3"
     const val maps = "18.1.0"
     const val location = "21.0.1"
+    const val zxing = "4.3.0"
 }

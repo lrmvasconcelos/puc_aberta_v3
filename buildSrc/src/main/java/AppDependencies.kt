@@ -10,4 +10,5 @@ object AppDependencies {
     const val koinCore = "io.insert-koin:koin-core:${Versions.koin}"
     const val maps = "com.google.android.gms:play-services-maps:${Versions.maps}"
     const val localtionService = "com.google.android.gms:play-services-location:${Versions.location}"
+    const val zxing = "com.journeyapps:zxing-android-embedded:${Versions.zxing}"
 }
