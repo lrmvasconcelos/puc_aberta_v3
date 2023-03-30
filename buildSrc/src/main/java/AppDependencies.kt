@@ -9,4 +9,5 @@ object AppDependencies {
     const val koinAndroidx = "io.insert-koin:koin-android:${Versions.koin}"
     const val koinCore = "io.insert-koin:koin-core:${Versions.koin}"
     const val maps = "com.google.android.gms:play-services-maps:${Versions.maps}"
+    const val localtionService = "com.google.android.gms:play-services-location:${Versions.location}"
 }

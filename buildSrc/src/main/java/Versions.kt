@@ -8,4 +8,5 @@ object Versions{
     const val expresso = "3.5.1"
     const val koin = "3.3.3"
     const val maps = "18.1.0"
+    const val location = "21.0.1"
 }

@@ -84,7 +84,7 @@ class MapActivity : AppCompatActivity(),
 
     private fun getCameraPosition(googleMap: GoogleMap) = CameraPosition
         .builder(googleMap.cameraPosition)
-        .target(viewModel.recepitivo)
+        .target(viewModel.reception)
         .bearing(310.toFloat())
         .zoom(17.toFloat())
         .build()

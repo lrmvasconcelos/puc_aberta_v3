@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import interactor.GetAllCommonLocationsInteractor
 import interactor.GetIceiLocationInteractor
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
+import utils.RECEPTION_LOCATION
 
 class MapViewModel(
     private val mapInteractor: GetAllCommonLocationsInteractor,
@@ -20,13 +21,15 @@ class MapViewModel(
     private val _iceiMarksObserver: MutableLiveData<List<MarkerOptions>> = MutableLiveData()
     val iceiMarksObserver: LiveData<List<MarkerOptions>> get() = _iceiMarksObserver
 
-    val recepitivo = LatLng(-19.924542, -43.993056)
+    val reception = RECEPTION_LOCATION.run {
+        LatLng(this.latitude, this.longitude)
+    }
 
     fun loadCommonMarks() {
         _commonMarksObserver.value = mapInteractor.invoke().toMarkerOptionsList()
     }
 
-    fun loadICEIMarks(){
+    fun loadICEIMarks() {
         _iceiMarksObserver.value = iceiInteractor().toMarkerOptionsList()
     }
 
