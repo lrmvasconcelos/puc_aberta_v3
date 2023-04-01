@@ -3,6 +3,8 @@ package pucaberta.pucminas.presentation.ui.registration
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -144,5 +146,11 @@ class RegistrationActivity : AppCompatActivity(),
             captureActivity = QRCodeActivity::class.java
         }
         qrCodeScanner.launch(options)
+    }
+
+    companion object {
+        fun newInstance(context: Context): Intent {
+            return Intent(context, RegistrationActivity::class.java)
+        }
     }
 }

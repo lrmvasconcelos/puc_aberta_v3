@@ -3,4 +3,7 @@
     <string name="qr_code_button_text">QR Code</string>
     <string name="location_button_text">Geolocalização</string>
     <string name="register_screen_confirmation_text">Confirme sua presença no aplicativo Puc aberta utilizando as seguintes opções</string>
+    <string name="title_activity_start_screen">StartScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

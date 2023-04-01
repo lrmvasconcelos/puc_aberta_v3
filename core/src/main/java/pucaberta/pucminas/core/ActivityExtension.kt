@@ -1,6 +1,7 @@
 package pucaberta.pucminas.core
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -17,3 +18,5 @@ fun Activity.startWithAnimation(intent: Intent){
     startActivity(intent)
     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 }
+
+fun Context.getPreferences() = getSharedPreferences("puc_aberta_prefences", Context.MODE_PRIVATE)
