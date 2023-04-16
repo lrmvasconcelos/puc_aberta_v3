@@ -24,9 +24,11 @@ import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
 import pucaberta.pucminas.core.camera.QRCodeActivity
 import pucaberta.pucminas.core.camera.setupQrCodeScanner
 import pucaberta.pucminas.core.clickWithDebounce
+import pucaberta.pucminas.core.startWithAnimation
 import pucaberta.pucminas.core.viewBinding
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.RegistrationActivityBinding
+import pucaberta.pucminas.presentation.ui.map.MapActivity
 import utils.DISTANCE_FACTOR
 import utils.RECEPTION_LOCATION
 
@@ -53,16 +55,12 @@ class RegistrationActivity : AppCompatActivity(),
         setupClicks()
     }
 
-    fun configQrScanner() {
+    private fun configQrScanner() {
         qrCodeScanner = setupQrCodeScanner {
-            if (it.contents != null) {
-                val builder =
-                    AlertDialog.Builder(this)
-                builder.setTitle("Result")
-                builder.setMessage(it.contents)
-                builder.setPositiveButton(
-                    "OK"
-                ) { dialogInterface, i -> dialogInterface.dismiss() }.show()
+            if (it.contents.equals(CONFIRMATION_KEY)) {
+                showWelcomeDialog()
+            } else {
+                showQRCodeErrorDialog()
             }
         }
     }
@@ -126,7 +124,7 @@ class RegistrationActivity : AppCompatActivity(),
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null && location.distanceTo(RECEPTION_LOCATION) <= DISTANCE_FACTOR) {
-                    Log.d("Teste", "Sucesso")
+                    showWelcomeDialog()
                 } else {
                     Log.d("Teste", "Error")
                     //TODO() Modal de erro
@@ -148,7 +146,37 @@ class RegistrationActivity : AppCompatActivity(),
         qrCodeScanner.launch(options)
     }
 
+    private fun showWelcomeDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle(getString(R.string.register_screen_confirmation_success_title))
+            setMessage(getString(R.string.register_screen_confirmation_success))
+            setPositiveButton(
+                "OK"
+            ) { dialogInterface, i ->
+                run {
+                    startWithAnimation(MapActivity.newInstance(this@RegistrationActivity).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                    viewModel.setIsLogged()
+                    dialogInterface.dismiss()
+                }
+            }.show()
+        }
+    }
+
+    private fun showQRCodeErrorDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle(getString(R.string.register_screen_confirmation_error_title))
+            setMessage(getString(R.string.register_screen_confirmation_error_desciption))
+            setPositiveButton(
+                "OK"
+            ) { dialogInterface, i -> dialogInterface.dismiss() }.show()
+        }
+    }
+
     companion object {
+
+        private const val CONFIRMATION_KEY = "PUC_ABERTA_2023"
         fun newInstance(context: Context): Intent {
             return Intent(context, RegistrationActivity::class.java)
         }

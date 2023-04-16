@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pucaberta.pucminas.core.PermissionUtils
@@ -28,7 +30,7 @@ import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 
 class MapActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
-    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback,
+    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, OnMarkerClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback {
 
     private var permissionDenied = false
@@ -53,7 +55,7 @@ class MapActivity : AppCompatActivity(),
         observe(commonMarksObserver) {
             setupMarkers(it)
         }
-        observe(iceiMarksObserver){
+        observe(iceiMarksObserver) {
             setupMarkers(it)
         }
     }
@@ -75,6 +77,7 @@ class MapActivity : AppCompatActivity(),
             setOnInfoWindowClickListener {
                 Log.d("Click", "Click")
             }
+            setOnMarkerClickListener(this@MapActivity)
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
         enableMyLocation()
@@ -90,19 +93,24 @@ class MapActivity : AppCompatActivity(),
         .build()
 
     override fun onMyLocationButtonClick(): Boolean {
-       if(!isGPSEnabled(this)){
-           Toast.makeText(
-               this,
-               this.resources.getString(R.string.gps_disable_message),
-               Toast.LENGTH_SHORT
-           ).show()
-       }
+        if (!isGPSEnabled(this)) {
+            Toast.makeText(
+                this,
+                this.resources.getString(R.string.gps_disable_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         return false
     }
 
     override fun onMyLocationClick(location: Location) {
-        Toast.makeText( this, "Current location:\n$location", Toast.LENGTH_LONG)
+        Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
             .show()
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        Log.d("Click", marker.toString())
+        return false
     }
 
     @SuppressLint("MissingPermission")
@@ -164,7 +172,7 @@ class MapActivity : AppCompatActivity(),
 
     companion object {
         fun newInstance(context: Context): Intent {
-           return Intent(context, MapActivity::class.java)
+            return Intent(context, MapActivity::class.java)
         }
     }
 

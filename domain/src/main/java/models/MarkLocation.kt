@@ -4,5 +4,6 @@ data class MarkLocation(
     val latitude: Double,
     val longitude: Double,
     val markTitle: String? = null,
-    val icon: Int
+    val icon: Int,
+    val id: Long,
 )
