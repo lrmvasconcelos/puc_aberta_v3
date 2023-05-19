@@ -15,6 +15,7 @@ private fun MarkLocation.toMarkerOptions(): MarkerOptions {
         markTitle?.let {
             title(it)
         }
+        zIndex(id.toFloat())
         icon(BitmapDescriptorFactory.fromResource(this@toMarkerOptions.icon))
     }
 }

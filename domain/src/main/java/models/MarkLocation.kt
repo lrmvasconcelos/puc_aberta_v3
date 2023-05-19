@@ -6,4 +6,6 @@ data class MarkLocation(
     val markTitle: String? = null,
     val icon: Int,
     val id: Long,
+    val showQrCode: Boolean = false,
+    val snippet: String? = null
 )

@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import models.MarkLocation
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pucaberta.pucminas.core.PermissionUtils
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
@@ -27,6 +28,8 @@ import pucaberta.pucminas.core.observe
 import pucaberta.pucminas.core.viewBinding
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
+import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
+import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
 class MapActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
@@ -52,16 +55,20 @@ class MapActivity : AppCompatActivity(),
     }
 
     private fun setupObservers() = with(viewModel) {
-        observe(commonMarksObserver) {
-            setupMarkers(it)
-        }
-        observe(iceiMarksObserver) {
+        observe(allMarks) {
             setupMarkers(it)
         }
     }
 
-    private fun setupMarkers(markers: List<MarkerOptions>) {
-        markers.forEach {
+    private fun setupMarkers(markers: List<MarkLocation>) {
+        map.setInfoWindowAdapter(
+            CustomInfoWindowAdapter(
+                context = this@MapActivity,
+                markers = markers
+            )
+        )
+
+        markers.toMarkerOptionsList().forEach {
             map.addMarker(it)
         }
     }
@@ -81,8 +88,7 @@ class MapActivity : AppCompatActivity(),
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
         enableMyLocation()
-        viewModel.loadCommonMarks()
-        viewModel.loadICEIMarks()
+        viewModel.loadAllMarks()
     }
 
     private fun getCameraPosition(googleMap: GoogleMap) = CameraPosition
