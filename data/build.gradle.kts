@@ -38,4 +38,5 @@ dependencies{
     implementation(project(Modules.core))
     implementation(AppDependencies.koinCore)
     implementation(AppDependencies.koinAndroidx)
+    implementation(AppDependencies.gson)
 }

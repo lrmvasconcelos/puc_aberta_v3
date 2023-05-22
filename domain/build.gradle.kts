@@ -37,4 +37,5 @@ dependencies {
     implementation(AppDependencies.kotlin)
     implementation(AppDependencies.koinCore)
     implementation(AppDependencies.koinAndroidx)
+    implementation(AppDependencies.gson)
 }

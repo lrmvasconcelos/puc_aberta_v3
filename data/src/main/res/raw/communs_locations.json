@@ -1,0 +1,17 @@
+[
+    {
+        "latitude": -19.924542,
+        "longitude": -43.993056,
+        "titulo": "Receptivo",
+        "tipo": "RECEPTIVO",
+        "id": 0 
+    },
+    {
+        "latitude": -19.922306,
+        "longitude": -43.993384,
+        "titulo": "Receptivo",
+        "tipo": "FEIRA_CURSOS",
+        "id": 1,
+        "mostrarQrCode": true 
+    }
+]

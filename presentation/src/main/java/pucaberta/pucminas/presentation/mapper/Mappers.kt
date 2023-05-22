@@ -3,7 +3,7 @@ package pucaberta.pucminas.presentation.mapper
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import models.IconType
+import models.LocationType
 import models.MarkLocation
 import pucaberta.pucminas.presentation.R
 
@@ -18,13 +18,13 @@ private fun MarkLocation.toMarkerOptions(): MarkerOptions {
             title(it)
         }
         zIndex(id.toFloat())
-        icon(BitmapDescriptorFactory.fromResource(this@toMarkerOptions.iconType.getIconRes()))
+        icon(BitmapDescriptorFactory.fromResource(this@toMarkerOptions.locationType.getIconRes()))
     }
 }
 
-internal fun IconType.getIconRes() = when (this) {
-    IconType.RECEPTIVO -> R.drawable.ic_receptivo
-    IconType.FEIRA_CURSOS -> R.drawable.ic_feira_de_cursos
-    IconType.INSTITUTOS -> R.drawable.ic_institutos_e_faculdades
-    IconType.AUDITORIOS -> R.drawable.ic_auditorios
+internal fun LocationType.getIconRes() = when (this) {
+    LocationType.RECEPTIVO -> R.drawable.ic_receptivo
+    LocationType.FEIRA_CURSOS -> R.drawable.ic_feira_de_cursos
+    LocationType.INSTITUTOS -> R.drawable.ic_institutos_e_faculdades
+    LocationType.AUDITORIOS -> R.drawable.ic_auditorios
 }
