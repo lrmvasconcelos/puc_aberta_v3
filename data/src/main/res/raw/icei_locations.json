@@ -1,0 +1,18 @@
+[
+    {
+        "latitude": -19.923045,
+        "longitude": -43.994409,
+        "titulo": "Instituto de Ciências Exatas e Informática - ICEI",
+        "tipo": "INSTITUTOS",
+        "id": 2,
+        "mostrarQrCode": true 
+    },
+    {
+        "latitude": -19.923527,
+        "longitude": -43.993354,
+        "titulo": "Grupo J - 16h às 18h - Auditório Multiuso",
+        "tipo": "AUDITORIOS",
+        "id": 3,
+        "mostrarQrCode": true 
+    }
+]

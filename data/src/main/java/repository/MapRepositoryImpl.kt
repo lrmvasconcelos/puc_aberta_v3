@@ -20,23 +20,10 @@ class MapRepositoryImpl(
         )
     }
 
-
-    override fun getIceiLocations(): List<MarkLocation> = listOf(
-        MarkLocation(
-            latitude = -19.923045,
-            longitude = -43.994409,
-            markTitle = "Instituto de Ciências Exatas e Informática - ICEI",
-            locationType = LocationType.INSTITUTOS,
-            id = 2,
-            showQrCode = true,
-        ),
-        MarkLocation(
-            latitude = -19.923527,
-            longitude = -43.993354,
-            markTitle = "Grupo J - 16h às 18h - Auditório Multiuso",
-            locationType = LocationType.AUDITORIOS,
-            id = 3,
-            showQrCode = true
+    override fun getIceiLocations(): List<MarkLocation> {
+        return Gson().fromJson(
+            rawProvider.getStringFromRaw(R.raw.icei_locations),
+            TypeToken.getParameterized(List::class.java, MarkLocation::class.java).type
         )
-    )
+    }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
+import models.LocationType
 import models.MarkLocation
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.CustomInfoContentsBinding
@@ -26,8 +27,13 @@ class CustomInfoWindowAdapter(
     }
 
     override fun getInfoContents(marker: Marker): View? {
-        render(marker)
-        return binding.root
+        val tempMarker = markers.firstOrNull { marker.zIndex == it.id.toFloat() }
+        return if (tempMarker?.locationType == LocationType.FEIRA_CURSOS) {
+            null
+        } else {
+            render(marker)
+            binding.root
+        }
     }
 
     private fun render(marker: Marker) {
