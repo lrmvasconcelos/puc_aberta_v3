@@ -28,11 +28,12 @@ class CustomInfoWindowAdapter(
 
     override fun getInfoContents(marker: Marker): View? {
         val tempMarker = markers.firstOrNull { marker.zIndex == it.id.toFloat() }
-        return if (tempMarker?.locationType == LocationType.FEIRA_CURSOS) {
-            null
-        } else {
-            render(marker)
-            binding.root
+        return when (tempMarker?.locationType) {
+            LocationType.RECEPTIVO, LocationType.FEIRA_CURSOS -> null
+            else -> {
+                render(marker)
+                binding.root
+            }
         }
     }
 
