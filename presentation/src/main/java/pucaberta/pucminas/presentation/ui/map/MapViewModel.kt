@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import interactor.GetAllCommonLocationsInteractor
+import interactor.GetAllLocationsInteractor
+import interactor.GetCommonLocationsInteractor
 import interactor.GetIceiLocationInteractor
 import models.MarkLocation
-import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
 import utils.RECEPTION_LOCATION
 
 class MapViewModel(
-    private val mapInteractor: GetAllCommonLocationsInteractor,
-    private val iceiInteractor: GetIceiLocationInteractor
+    private val mapInteractor: GetCommonLocationsInteractor,
+    private val iceiInteractor: GetIceiLocationInteractor,
+    private val getAllLocationsInteractor: GetAllLocationsInteractor
 ) : ViewModel() {
 
     private val _commonMarksObserver: MutableLiveData<List<MarkLocation>> = MutableLiveData()
@@ -30,10 +30,7 @@ class MapViewModel(
     }
 
     fun loadAllMarks() {
-        _allMarks.value = mutableListOf<MarkLocation>().apply {
-            addAll(mapInteractor())
-            addAll(iceiInteractor())
-        }
+        _allMarks.value = getAllLocationsInteractor()
     }
 
     fun loadCommonMarks() {

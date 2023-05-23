@@ -33,7 +33,7 @@ import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
 class MapActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
-    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, OnMarkerClickListener,
+    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback,
     ActivityCompat.OnRequestPermissionsResultCallback {
 
     private var permissionDenied = false
@@ -84,7 +84,6 @@ class MapActivity : AppCompatActivity(),
             setOnInfoWindowClickListener {
                 Log.d("Click", "Click")
             }
-            setOnMarkerClickListener(this@MapActivity)
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
         enableMyLocation()
@@ -112,11 +111,6 @@ class MapActivity : AppCompatActivity(),
     override fun onMyLocationClick(location: Location) {
         Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
             .show()
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        Log.d("Click", marker.toString())
-        return false
     }
 
     @SuppressLint("MissingPermission")

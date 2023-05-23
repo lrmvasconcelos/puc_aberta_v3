@@ -15,7 +15,7 @@ class MapRepositoryImpl(
 
     private val sharedPreferences: SharedPreferences by lazy { context.getPreferences() }
 
-    override fun getAllCommonLocations(): List<MarkLocation> {
+    override fun getCommonLocations(): List<MarkLocation> {
 
         val commonsLocation = sharedPreferences.getString(USER_LOCATION_CACHE_KEY, null)
 
@@ -33,6 +33,19 @@ class MapRepositoryImpl(
             iceiLocation,
             TypeToken.getParameterized(List::class.java, MarkLocation::class.java).type
         )
+    }
+
+    override fun getAllLocations(): List<MarkLocation> {
+
+        val iceiLocationList = getIceiLocations()
+
+        val commonsLocationList = getCommonLocations()
+
+        val locationList = commonsLocationList.toMutableList().apply {
+            addAll(iceiLocationList)
+        }.toList()
+
+        return locationList
     }
 
     companion object {
