@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 inline fun <reified T> AppCompatActivity.observe(
     liveData: LiveData<T>,
@@ -18,10 +20,10 @@ inline fun <reified T> AppCompatActivity.observe(
 }
 
 inline fun <reified T> AppCompatActivity.observeEvent(
-    event: StateFlow<T>,
+    event: SharedFlow<T>,
     crossinline onCollected: (T) -> Unit
 ) {
-    lifecycleScope.launchWhenResumed {
+    lifecycleScope.launch {
         event.collect {
             onCollected(it)
         }

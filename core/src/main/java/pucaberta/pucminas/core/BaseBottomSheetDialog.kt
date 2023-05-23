@@ -17,6 +17,10 @@ class BaseBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val finishEvent: BottomSheetFinishEvent by inject()
 
+    private val markerId: Float? by lazy {
+        arguments?.getFloat(MARKER_ID)
+    }
+
     private lateinit var binding: BaseBottomSheetBinding
 
     override fun onCreateView(
@@ -32,7 +36,9 @@ class BaseBottomSheetDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.actvRegisterText.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                finishEvent.trigger()
+                markerId?.let {
+                    finishEvent.trigger(it)
+                }
                 this.cancel()
             }
             dismissAllowingStateLoss()
@@ -40,8 +46,15 @@ class BaseBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(): BaseBottomSheetDialog {
-            return BaseBottomSheetDialog()
+
+        private const val MARKER_ID = "MARKER_ID"
+
+        fun newInstance(markerId: Float): BaseBottomSheetDialog {
+            return BaseBottomSheetDialog().apply {
+                arguments = Bundle().apply {
+                    putFloat(MARKER_ID, markerId)
+                }
+            }
         }
     }
 }

@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class BottomSheetFinishEvent(private val externalScope: CoroutineScope) {
-    private val _finishFlow = MutableSharedFlow<Unit>()
-    val finishFlow: SharedFlow<Unit> = _finishFlow
+    private val _finishFlow = MutableSharedFlow<Float>()
+    val finishFlow: SharedFlow<Float> = _finishFlow
 
-    fun trigger(){
+    fun trigger(id: Float) {
         externalScope.launch {
-            _finishFlow.emit(Unit)
+            _finishFlow.emit(id)
         }
     }
 }

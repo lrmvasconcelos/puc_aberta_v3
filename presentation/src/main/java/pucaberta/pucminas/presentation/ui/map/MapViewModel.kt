@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import interactor.GetAllLocationsInteractor
 import interactor.GetCommonLocationsInteractor
 import interactor.GetIceiLocationInteractor
@@ -25,12 +26,19 @@ class MapViewModel(
     private val _allMarks: MutableLiveData<List<MarkLocation>> = MutableLiveData()
     val allMarks: LiveData<List<MarkLocation>> get() = _allMarks
 
+    private val _openQrCodeBottomSheet: MutableLiveData<Float> = MutableLiveData()
+    val openQrCodeBottomSheet: LiveData<Float> get() = _openQrCodeBottomSheet
+
     val reception = RECEPTION_LOCATION.run {
         LatLng(this.latitude, this.longitude)
     }
 
     fun loadAllMarks() {
         _allMarks.value = getAllLocationsInteractor()
+    }
+
+    fun onMarkerClick(marker: Marker) {
+        _openQrCodeBottomSheet.value = marker.zIndex
     }
 
     fun loadCommonMarks() {

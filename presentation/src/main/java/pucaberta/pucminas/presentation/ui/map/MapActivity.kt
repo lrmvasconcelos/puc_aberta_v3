@@ -13,13 +13,12 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
+import models.LocationType
 import models.MarkLocation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -63,12 +62,13 @@ class MapActivity : AppCompatActivity(),
             setupMarkers(it)
         }
 
-        lifecycleScope.launch {
-            finishEvent.finishFlow.collect {
-                Log.d("TESTE", "TESTE")
-            }
+        observe(openQrCodeBottomSheet) {
+            openBottomSheet(it)
         }
 
+        observeEvent(finishEvent.finishFlow) {
+            Log.d("TESTE", "TESTE")
+        }
     }
 
     private fun setupMarkers(markers: List<MarkLocation>) {
@@ -86,14 +86,15 @@ class MapActivity : AppCompatActivity(),
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap.apply {
+            uiSettings.isCompassEnabled = false
             mapType = GoogleMap.MAP_TYPE_HYBRID
             isBuildingsEnabled = true
             isIndoorEnabled = true
-            uiSettings.isZoomControlsEnabled = true
+            uiSettings.isZoomControlsEnabled = false
             setOnMyLocationButtonClickListener(this@MapActivity)
             setOnMyLocationClickListener(this@MapActivity)
             setOnInfoWindowClickListener {
-                onMarkerClick(it)
+                viewModel.onMarkerClick(it)
             }
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
@@ -181,8 +182,8 @@ class MapActivity : AppCompatActivity(),
         newInstance(true).show(supportFragmentManager, "dialog")
     }
 
-    private fun onMarkerClick(marker: Marker) {
-        BaseBottomSheetDialog.newInstance().showBottomSheet(
+    private fun openBottomSheet(markerId: Float) {
+        BaseBottomSheetDialog.newInstance(markerId).showBottomSheet(
             this.supportFragmentManager,
             BaseBottomSheetDialog::class.java.name
         )

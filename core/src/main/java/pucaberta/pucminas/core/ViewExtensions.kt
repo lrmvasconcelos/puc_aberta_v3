@@ -40,6 +40,6 @@ fun DialogFragment.showOnce(
             show(fragmentManager, tag)
         }
     } catch (error: Throwable) {
-        Log.d(tag, "Dialog já existe")
+        Log.d(tag, "Dialog já existe na pilha")
     }
 }
