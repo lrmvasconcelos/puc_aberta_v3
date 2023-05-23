@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
@@ -18,14 +19,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.launch
 import models.MarkLocation
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import pucaberta.pucminas.core.PermissionUtils
+import pucaberta.pucminas.core.*
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
 import pucaberta.pucminas.core.PermissionUtils.isGPSEnabled
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
-import pucaberta.pucminas.core.observe
-import pucaberta.pucminas.core.viewBinding
+import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
@@ -45,6 +47,8 @@ class MapActivity : AppCompatActivity(),
         MapActivityBinding::inflate
     )
 
+    private val finishEvent: BottomSheetFinishEvent by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -58,6 +62,13 @@ class MapActivity : AppCompatActivity(),
         observe(allMarks) {
             setupMarkers(it)
         }
+
+        lifecycleScope.launch {
+            finishEvent.finishFlow.collect {
+                Log.d("TESTE", "TESTE")
+            }
+        }
+
     }
 
     private fun setupMarkers(markers: List<MarkLocation>) {
@@ -82,7 +93,7 @@ class MapActivity : AppCompatActivity(),
             setOnMyLocationButtonClickListener(this@MapActivity)
             setOnMyLocationClickListener(this@MapActivity)
             setOnInfoWindowClickListener {
-                Log.d("Click", "Click")
+                onMarkerClick(it)
             }
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
@@ -168,6 +179,13 @@ class MapActivity : AppCompatActivity(),
 
     private fun showMissingPermissionError() {
         newInstance(true).show(supportFragmentManager, "dialog")
+    }
+
+    private fun onMarkerClick(marker: Marker) {
+        BaseBottomSheetDialog.newInstance().showBottomSheet(
+            this.supportFragmentManager,
+            BaseBottomSheetDialog::class.java.name
+        )
     }
 
     companion object {
