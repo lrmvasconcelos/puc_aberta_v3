@@ -10,7 +10,7 @@ val presentationModule = module {
 
     viewModel { MapViewModel(get(), get()) }
 
-    viewModel { RegistrationViewModel(get()) }
+    viewModel { RegistrationViewModel(get(), get()) }
 
     viewModel { StartViewModel(get()) }
 

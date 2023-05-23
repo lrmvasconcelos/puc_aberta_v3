@@ -1,6 +1,5 @@
 package repoInterfaces
 
-import android.location.Location
 import models.MarkLocation
 
 interface MapRepository {

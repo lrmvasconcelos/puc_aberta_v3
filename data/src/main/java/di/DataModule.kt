@@ -9,7 +9,7 @@ import repository.SessionRepositoryImpl
 
 val dataModule = module {
 
-    factory<MapRepository> { MapRepositoryImpl(get()) }
+    factory<MapRepository> { MapRepositoryImpl(androidContext()) }
 
-    factory<SessionRepository> { SessionRepositoryImpl(androidContext()) }
+    factory<SessionRepository> { SessionRepositoryImpl(androidContext(), get()) }
 }

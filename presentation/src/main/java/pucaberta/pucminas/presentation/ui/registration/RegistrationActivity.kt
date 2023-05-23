@@ -138,7 +138,6 @@ class RegistrationActivity : AppCompatActivity(),
 
     private fun scanCode() {
         val options = ScanOptions().apply {
-            setPrompt("Volume up to flash on")
             setBeepEnabled(true)
             setOrientationLocked(true)
             captureActivity = QRCodeActivity::class.java

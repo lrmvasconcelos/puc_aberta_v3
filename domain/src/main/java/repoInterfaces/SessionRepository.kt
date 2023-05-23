@@ -6,4 +6,6 @@ interface SessionRepository {
 
     fun setLogged()
 
+    fun  validateLocationsAtCache()
+
 }

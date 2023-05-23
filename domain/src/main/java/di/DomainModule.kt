@@ -1,9 +1,6 @@
 package di
 
-import interactor.GetAllCommonLocationsInteractor
-import interactor.GetIceiLocationInteractor
-import interactor.GetSessionInteractor
-import interactor.SetSessionInteractor
+import interactor.*
 import org.koin.dsl.module
 
 val domainModule = module{
@@ -11,4 +8,5 @@ val domainModule = module{
     factory { GetIceiLocationInteractor(get()) }
     factory { GetSessionInteractor(get()) }
     factory { SetSessionInteractor(get()) }
+    factory { SaveUsersLocationInteractor(get()) }
 }
