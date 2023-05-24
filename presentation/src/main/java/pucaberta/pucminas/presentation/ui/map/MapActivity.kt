@@ -50,6 +50,9 @@ class MapActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (supportActionBar != null) {
+            supportActionBar?.hide();
+        }
         setContentView(binding.root)
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?

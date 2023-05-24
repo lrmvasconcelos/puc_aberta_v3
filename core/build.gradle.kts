@@ -42,9 +42,6 @@ dependencies {
     implementation(AppDependencies.koinAndroidx)
     implementation(AppDependencies.appCompat)
     implementation(AppDependencies.zxing)
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
+    implementation(AppDependencies.material)
+    implementation(AppDependencies.constraintLayout)
 }
