@@ -52,17 +52,28 @@
         app:layout_constraintStart_toStartOf="@id/scoreSeekBar"
         tools:text="1" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/actvScore"
+        app:layout_constraintEnd_toEndOf="@id/actvScore"
+        app:layout_constraintStart_toStartOf="@id/actvScore"
+        app:layout_constraintTop_toTopOf="@id/actvScore"
+        app:lottie_rawRes="@raw/fireworks_lottie" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/qrCodeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        app:maxImageSize="36dp"
         android:src="@drawable/ic_qr_code"
         app:backgroundTint="@color/gray100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="36dp"
         tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

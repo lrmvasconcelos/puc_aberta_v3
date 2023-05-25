@@ -4,9 +4,11 @@ package repository
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import models.MarkLocation
 import pucaberta.pucminas.core.getPreferences
+import pucaberta.pucminas.data.R
 import repoInterfaces.MapRepository
 
 class MapRepositoryImpl(
@@ -25,6 +27,15 @@ class MapRepositoryImpl(
         )
     }
 
+    override fun updateCommonLocations(markers: List<MarkLocation>) {
+
+        val json = GsonBuilder().serializeNulls().create().toJson(markers)
+
+        sharedPreferences.edit().putString(
+            USER_LOCATION_CACHE_KEY, json
+        ).apply()
+    }
+
     override fun getIceiLocations(): List<MarkLocation> {
 
         val iceiLocation = sharedPreferences.getString(ICEI_LOCATION_CACHE_KEY, null)
@@ -33,6 +44,13 @@ class MapRepositoryImpl(
             iceiLocation,
             TypeToken.getParameterized(List::class.java, MarkLocation::class.java).type
         )
+    }
+
+    override fun updateIceiLocations(markers: List<MarkLocation>) {
+        val json = GsonBuilder().serializeNulls().create().toJson(markers)
+        sharedPreferences.edit().putString(
+            ICEI_LOCATION_CACHE_KEY, json
+        ).apply()
     }
 
     override fun getAllLocations(): List<MarkLocation> {

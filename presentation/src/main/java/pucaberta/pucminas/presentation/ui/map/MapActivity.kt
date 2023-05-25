@@ -1,19 +1,26 @@
 package pucaberta.pucminas.presentation.ui.map
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
+import com.journeyapps.barcodescanner.ScanOptions
 import models.MarkLocation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +28,8 @@ import pucaberta.pucminas.core.*
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
 import pucaberta.pucminas.core.PermissionUtils.isGPSEnabled
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
+import pucaberta.pucminas.core.camera.QRCodeActivity
+import pucaberta.pucminas.core.camera.setupQrCodeScanner
 import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
@@ -44,6 +53,12 @@ class MapActivity : AppCompatActivity(),
 
     private val finishEvent: BottomSheetFinishEvent by inject()
 
+    private lateinit var qrCodeScanner: ActivityResultLauncher<ScanOptions>
+
+    private val shakeAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(this@MapActivity, R.anim.shake)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (supportActionBar != null) {
@@ -65,6 +80,39 @@ class MapActivity : AppCompatActivity(),
                 openQrBottomSheet()
             }
         }
+        configQrScanner()
+    }
+
+    private fun configQrScanner() {
+        qrCodeScanner = setupQrCodeScanner {
+            viewModel.processQrCodeResult(it.contents)
+        }
+    }
+
+    private fun animateComponents() = with(binding) {
+        actvScore.startAnimation(shakeAnimation)
+        animationView.isVisible = true
+        animationView.playAnimation()
+        animationView.repeatCount = 2
+        animationView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
+                animationView.isVisible = false
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+
+    }
+
+    private fun scanCode() {
+        val options = ScanOptions().apply {
+            setBeepEnabled(true)
+            setOrientationLocked(true)
+            captureActivity = QRCodeActivity::class.java
+        }
+        qrCodeScanner.launch(options)
     }
 
     private fun setupObservers() = with(viewModel) {
@@ -81,6 +129,7 @@ class MapActivity : AppCompatActivity(),
         }
 
         observeEvent(finishEvent.finishFlow) {
+            scanCode()
         }
     }
 
@@ -206,10 +255,14 @@ class MapActivity : AppCompatActivity(),
         with(binding) {
             actvScore.text = level.toString()
             scoreSeekBar.currentValue = level
+            if (viewModel.isAnimationEnabled) {
+                animateComponents()
+            }
         }
     }
 
     companion object {
+
         fun newInstance(context: Context): Intent {
             return Intent(context, MapActivity::class.java)
         }

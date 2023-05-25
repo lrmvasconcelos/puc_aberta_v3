@@ -14,18 +14,21 @@ data class MarkLocation(
     @SerializedName("id")
     val id: Long,
     @SerializedName("mostrarQrCode")
-    val showQrCode: Boolean = false,
+    var showQrCode: Boolean = false,
     @SerializedName("snippet")
     val snippet: String? = null
 )
 
-enum class LocationType() {
+enum class LocationType(type: String) {
     @SerializedName("RECEPTIVO")
-    RECEPTIVO,
+    RECEPTIVO("RECEPTIVO"),
+
     @SerializedName("FEIRA_CURSOS")
-    FEIRA_CURSOS,
+    FEIRA_CURSOS("FEIRA_CURSOS"),
+
     @SerializedName("INSTITUTOS")
-    INSTITUTOS,
+    INSTITUTOS("INSTITUTOS"),
+
     @SerializedName("AUDITORIOS")
-    AUDITORIOS
+    AUDITORIOS("AUDITORIOS")
 }

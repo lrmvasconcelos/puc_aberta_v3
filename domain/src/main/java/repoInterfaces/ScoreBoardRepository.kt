@@ -2,8 +2,8 @@ package repoInterfaces
 
 interface ScoreBoardRepository {
 
-    fun saveLevel(level: Int)
+    fun saveNewMark(marksChecked: List<String>)
 
-    fun getLevelInt(): Int
+    fun getQrReaderTypes(): List<String>
 
 }

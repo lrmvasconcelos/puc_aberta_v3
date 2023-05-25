@@ -8,7 +8,7 @@ import pucaberta.pucminas.presentation.ui.splash.StartViewModel
 
 val presentationModule = module {
 
-    viewModel { MapViewModel(get(), get(), get(), get()) }
+    viewModel { MapViewModel(get(), get(), get(), get(), get()) }
 
     viewModel { RegistrationViewModel(get(), get()) }
 
