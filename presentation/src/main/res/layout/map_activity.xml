@@ -16,18 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.mohammedalaa.seekbar.RangeSeekBarView
-        android:id="@+id/range_seekbar3"
+    <pucaberta.pucminas.core.components.RangeSeekBarView
+        android:id="@+id/scoreSeekBar"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_marginStart="24dp"
+        android:clickable="false"
         app:barHeight="15dp"
         app:baseColor="@color/gray100"
         app:circleFillColor="@color/primaryColor"
         app:circleRadius="15dp"
         app:circleTextColor="@color/white"
-        app:circleTextSize="@dimen/value_bar_circleTextSize"
-        app:currentValue="1"
+        app:circleTextSize="14sp"
         app:fillColor="@color/accentColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -36,6 +36,20 @@
         app:maxValue="3"
         app:minValue="0"
         app:orientation="BOTTOM_TO_TOP"
-        app:stepValue="1" />
+        app:stepValue="1"
+        tools:currentValue="1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actvScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle_shape_stroke"
+        android:gravity="center"
+        android:textSize="16sp"
+        app:fontFamily="@font/roboto_bold"
+        app:layout_constraintBottom_toBottomOf="@id/scoreSeekBar"
+        app:layout_constraintEnd_toEndOf="@id/scoreSeekBar"
+        app:layout_constraintStart_toStartOf="@id/scoreSeekBar"
+        tools:text="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

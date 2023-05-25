@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DoubleValueSeekBarView">
+        <attr format="integer|dimension" name="r2minValueStep"/>
+        <attr format="integer|dimension" name="r2maxValueStep"/>
+        <attr format="integer|dimension" name="r2maxValue"/>
+        <attr format="integer|dimension" name="r2minValue"/>
+        <attr format="integer|dimension" name="r2CurrentMaxValue"/>
+        <attr format="integer|dimension" name="r2CurrentMinValue"/>
+        <attr format="dimension" name="r2barHeight"/>
+        <attr format="dimension" name="r2circleRadius"/>
+        <attr format="dimension" name="r2circleTextSize"/>
+        <attr format="color" name="r2circleTextColor"/>
+        <attr format="color" name="r2baseColor"/>
+        <attr format="color" name="r2fillColor"/>
+        <attr format="color" name="r2circleFillColor"/>
+    </declare-styleable>
+    <declare-styleable name="RangeSeekBarView">
+        <attr format="integer|dimension" name="stepValue"/>
+        <attr format="integer|dimension" name="minValue"/>
+        <attr format="integer|dimension" name="maxValue"/>
+        <attr format="integer|dimension" name="currentValue"/>
+        <attr format="dimension" name="barHeight"/>
+        <attr format="dimension" name="circleRadius"/>
+        <attr format="dimension" name="circleTextSize"/>
+        <attr format="color" name="circleTextColor"/>
+        <attr format="color" name="baseColor"/>
+        <attr format="color" name="fillColor"/>
+        <attr format="color" name="circleFillColor"/>
+        <attr format="enum" name="orientation">
+            <enum name="RIGHT_TO_LEFT" value="0"/>
+            <enum name="LEFT_TO_RIGHT" value="1"/>
+            <enum name="TOP_TO_BOTTOM" value="2"/>
+            <enum name="BOTTOM_TO_TOP" value="3"/>
+        </attr>
+
+    </declare-styleable>
+</resources>

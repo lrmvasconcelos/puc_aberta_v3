@@ -10,15 +10,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.Marker
-import kotlinx.coroutines.launch
-import models.LocationType
 import models.MarkLocation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,10 +50,18 @@ class MapActivity : AppCompatActivity(),
             supportActionBar?.hide();
         }
         setContentView(binding.root)
+        setupComponents()
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
         setupObservers()
+        viewModel.getUserScore()
+    }
+
+    private fun setupComponents() {
+        with(binding) {
+            scoreSeekBar.isTouchListenerEnabled = false
+        }
     }
 
     private fun setupObservers() = with(viewModel) {
@@ -67,6 +71,10 @@ class MapActivity : AppCompatActivity(),
 
         observe(openQrCodeBottomSheet) {
             openBottomSheet(it)
+        }
+
+        observe(userLevel) {
+            setUserLevel(it)
         }
 
         observeEvent(finishEvent.finishFlow) {
@@ -190,6 +198,13 @@ class MapActivity : AppCompatActivity(),
             this.supportFragmentManager,
             BaseBottomSheetDialog::class.java.name
         )
+    }
+
+    private fun setUserLevel(level: Int) {
+        with(binding) {
+            actvScore.text = level.toString()
+            scoreSeekBar.currentValue = level
+        }
     }
 
     companion object {

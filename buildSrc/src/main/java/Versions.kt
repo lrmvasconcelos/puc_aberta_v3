@@ -11,5 +11,4 @@ object Versions{
     const val location = "21.0.1"
     const val zxing = "4.3.0"
     const val gson = "2.10.1"
-    const val rangeSeekBar = "1.0.6"
 }

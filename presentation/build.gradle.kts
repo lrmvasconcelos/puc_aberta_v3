@@ -50,7 +50,6 @@ dependencies {
     implementation(AppDependencies.maps)
     implementation(AppDependencies.localtionService)
     implementation(AppDependencies.zxing)
-    implementation(AppDependencies.rangeSeekbar)
     testImplementation(AppDependencies.junit)
     androidTestImplementation(AppDependencies.testExt)
     androidTestImplementation(AppDependencies.expresso)

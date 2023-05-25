@@ -12,5 +12,4 @@ object AppDependencies {
     const val localtionService = "com.google.android.gms:play-services-location:${Versions.location}"
     const val zxing = "com.journeyapps:zxing-android-embedded:${Versions.zxing}"
     const val gson = "com.google.code.gson:gson:${Versions.gson}"
-    const val rangeSeekbar = "com.github.MohammedAlaaMorsi:RangeSeekBar:${Versions.rangeSeekBar}"
 }

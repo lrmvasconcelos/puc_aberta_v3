@@ -8,13 +8,15 @@ import com.google.android.gms.maps.model.Marker
 import interactor.GetAllLocationsInteractor
 import interactor.GetCommonLocationsInteractor
 import interactor.GetIceiLocationInteractor
+import interactor.GetUserScoreInteractor
 import models.MarkLocation
 import utils.RECEPTION_LOCATION
 
 class MapViewModel(
     private val mapInteractor: GetCommonLocationsInteractor,
     private val iceiInteractor: GetIceiLocationInteractor,
-    private val getAllLocationsInteractor: GetAllLocationsInteractor
+    private val getAllLocationsInteractor: GetAllLocationsInteractor,
+    private val getUserScoreInteractor: GetUserScoreInteractor
 ) : ViewModel() {
 
     private val _commonMarksObserver: MutableLiveData<List<MarkLocation>> = MutableLiveData()
@@ -28,6 +30,9 @@ class MapViewModel(
 
     private val _openQrCodeBottomSheet: MutableLiveData<Float> = MutableLiveData()
     val openQrCodeBottomSheet: LiveData<Float> get() = _openQrCodeBottomSheet
+
+    private val _userLevel: MutableLiveData<Int> = MutableLiveData()
+    val userLevel: LiveData<Int> get() = _userLevel
 
     val reception = RECEPTION_LOCATION.run {
         LatLng(this.latitude, this.longitude)
@@ -47,6 +52,10 @@ class MapViewModel(
 
     fun loadICEIMarks() {
         _iceiMarksObserver.value = iceiInteractor()
+    }
+
+    fun getUserScore() {
+        _userLevel.value = getUserScoreInteractor()
     }
 
 }
