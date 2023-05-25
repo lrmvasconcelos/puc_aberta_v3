@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,6 +25,7 @@ import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
+import pucaberta.pucminas.presentation.ui.bottomsheet.QrCodeBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
 class MapActivity : AppCompatActivity(),
@@ -61,6 +61,9 @@ class MapActivity : AppCompatActivity(),
     private fun setupComponents() {
         with(binding) {
             scoreSeekBar.isTouchListenerEnabled = false
+            qrCodeButton.clickWithDebounce {
+                openQrBottomSheet()
+            }
         }
     }
 
@@ -70,7 +73,7 @@ class MapActivity : AppCompatActivity(),
         }
 
         observe(openQrCodeBottomSheet) {
-            openBottomSheet(it)
+            openQrBottomSheet()
         }
 
         observe(userLevel) {
@@ -78,7 +81,6 @@ class MapActivity : AppCompatActivity(),
         }
 
         observeEvent(finishEvent.finishFlow) {
-            Log.d("TESTE", "TESTE")
         }
     }
 
@@ -193,10 +195,10 @@ class MapActivity : AppCompatActivity(),
         newInstance(true).show(supportFragmentManager, "dialog")
     }
 
-    private fun openBottomSheet(markerId: Float) {
-        BaseBottomSheetDialog.newInstance(markerId).showBottomSheet(
+    private fun openQrBottomSheet() {
+        QrCodeBottomSheetDialog.newInstance().showBottomSheet(
             this.supportFragmentManager,
-            BaseBottomSheetDialog::class.java.name
+            QrCodeBottomSheetDialog::class.java.name
         )
     }
 

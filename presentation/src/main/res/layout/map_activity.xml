@@ -52,4 +52,17 @@
         app:layout_constraintStart_toStartOf="@id/scoreSeekBar"
         tools:text="1" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/qrCodeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:maxImageSize="36dp"
+        android:src="@drawable/ic_qr_code"
+        app:backgroundTint="@color/gray100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

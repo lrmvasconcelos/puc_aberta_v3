@@ -55,7 +55,7 @@ class CustomInfoWindowAdapter(
 
         if (hasToShowQrCode) {
             binding.snippet.apply {
-                text = "Qr Code Disponível"
+                text = context.getString(R.string.qr_code_available_description)
                 isVisible = true
             }
         }

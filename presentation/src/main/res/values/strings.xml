@@ -1,6 +1,7 @@
 <resources>
     <string name="gps_disable_message">"GPS está desabilitado, favor habilitar para que seja possível orientá-lo no campus"</string>
     <string name="qr_code_button_text">QR Code</string>
+    <string name="read_qr_code_button_text">Ler QR Code</string>
     <string name="location_button_text">Geolocalização</string>
     <string name="register_screen_confirmation_text">Confirme sua presença no aplicativo Puc aberta utilizando as seguintes opções</string>
     <string name="title_activity_start_screen">StartScreenActivity</string>
@@ -8,6 +9,8 @@
     <string name="register_screen_confirmation_success_title">Bem vindo ao Puc Aberta 2023</string>
     <string name="register_screen_confirmation_error_title">Ops!</string>
     <string name="register_screen_confirmation_error_desciption">Não foi possível confirmar sua presençã. Por favor tente novamente.</string>
+    <string name="qr_code_hint_description">Posicione o Qr Code dentro da área demarcada.\nAssim que estiver pronto clique no botão\n"Ler QR Code"</string>
+    <string name="qr_code_available_description">Qr Code Disponível. Clique para scanear</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
