@@ -16,7 +16,9 @@ class MapViewModel(
     private val iceiInteractor: GetIceiLocationInteractor,
     private val getAllLocationsInteractor: GetAllLocationsInteractor,
     private val getUserScoreInteractor: GetUserScoreInteractor,
-    private val setUserScoreInteractor: SetUserScoreInteractor
+    private val setUserScoreInteractor: SetUserScoreInteractor,
+    private val updateCommonLocationsInteractor: UpdateCommonLocationsInteractor,
+    private val updateIceiLocationsInteractor: UpdateIceiLocationsInteractor
 
 ) : ViewModel() {
 
@@ -82,7 +84,7 @@ class MapViewModel(
 
         isAnimationEnabled = true
         getUserScore()
-
+        loadAllMarks()
     }
 
     private fun updateIceiLocation(locationType: LocationType) {
@@ -94,19 +96,19 @@ class MapViewModel(
             }
         }
 
-        Log.d("Teste", "Teste")
+        updateIceiLocationsInteractor(iceiLocations)
 
     }
 
     private fun updateCommonsLocation(locationType: LocationType) {
-        val commonLocation = commonLocationsInteractor()
+        val commonLocations = commonLocationsInteractor()
 
-        commonLocation.forEachIndexed { position, item ->
+        commonLocations.forEachIndexed { position, item ->
             if (item.locationType == locationType) {
-                commonLocation[position].showQrCode = false
+                commonLocations[position].showQrCode = false
             }
         }
 
-        Log.d("Teste", "Teste")
+        updateCommonLocationsInteractor(commonLocations)
     }
 }

@@ -134,6 +134,7 @@ class MapActivity : AppCompatActivity(),
     }
 
     private fun setupMarkers(markers: List<MarkLocation>) {
+        map.clear()
         map.setInfoWindowAdapter(
             CustomInfoWindowAdapter(
                 context = this@MapActivity,

@@ -12,4 +12,6 @@ val domainModule = module {
     factory { GetAllLocationsInteractor(get()) }
     factory { GetUserScoreInteractor(get()) }
     factory { SetUserScoreInteractor(get()) }
+    factory { UpdateCommonLocationsInteractor(get()) }
+    factory { UpdateIceiLocationsInteractor(get()) }
 }
