@@ -29,7 +29,8 @@ import pucaberta.pucminas.core.camera.setupQrCodeScanner
 import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.RegistrationActivityBinding
-import pucaberta.pucminas.presentation.ui.bottomsheet.BaseBottomSheetDialog
+import pucaberta.pucminas.presentation.ui.bottomsheet.RegisterBottomSheetDialog
+import pucaberta.pucminas.presentation.ui.bottomsheet.SuccessBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.MapActivity
 import utils.DISTANCE_FACTOR
 import utils.RECEPTION_LOCATION
@@ -63,9 +64,10 @@ class RegistrationActivity : AppCompatActivity(),
 
     private fun setupObservers() {
         observeEvent(finishEvent.finishFlow) {
-            when(it){
-                BottomSheetTypeEnum.QRCODE.name ->  scanCode()
+            when (it) {
+                BottomSheetTypeEnum.QRCODE.name -> scanCode()
                 BottomSheetTypeEnum.GEOLOCATION.name -> checkLocationRequirements()
+                BottomSheetTypeEnum.SUCCESS.name -> openMapScreen()
             }
         }
     }
@@ -84,17 +86,23 @@ class RegistrationActivity : AppCompatActivity(),
 
     private fun setupClicks() {
         binding.btnGeolocation.clickWithDebounce {
-            openBottomSheet(R.string.geo_register_hint_description, BottomSheetTypeEnum.GEOLOCATION.name)
+            openBottomSheet(
+                R.string.geo_register_hint_description,
+                BottomSheetTypeEnum.GEOLOCATION.name
+            )
         }
         binding.btnQrCode.setOnClickListener {
-            openBottomSheet(R.string.qr_code_register_hint_description, BottomSheetTypeEnum.QRCODE.name)
+            openBottomSheet(
+                R.string.qr_code_register_hint_description,
+                BottomSheetTypeEnum.QRCODE.name
+            )
         }
     }
 
     private fun openBottomSheet(descriptionID: Int, lottieKey: String) {
-        BaseBottomSheetDialog.newInstance(descriptionID, lottieKey).showBottomSheet(
+        RegisterBottomSheetDialog.newInstance(descriptionID, lottieKey).showBottomSheet(
             this.supportFragmentManager,
-            BaseBottomSheetDialog::class.java.name
+            RegisterBottomSheetDialog::class.java.name
         )
     }
 
@@ -158,22 +166,19 @@ class RegistrationActivity : AppCompatActivity(),
         qrCodeScanner.launch(options)
     }
 
+    private fun openMapScreen() {
+        startWithAnimation(MapActivity.newInstance(this@RegistrationActivity).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        viewModel.setIsLogged()
+    }
+
     private fun showWelcomeDialog() {
-        AlertDialog.Builder(this).apply {
-            setTitle(getString(R.string.register_screen_confirmation_success_title))
-            setMessage(getString(R.string.register_screen_confirmation_success))
-            setPositiveButton(
-                "OK"
-            ) { dialogInterface, i ->
-                run {
-                    startWithAnimation(MapActivity.newInstance(this@RegistrationActivity).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
-                    viewModel.setIsLogged()
-                    dialogInterface.dismiss()
-                }
-            }.show()
-        }
+        viewModel.setIsLogged()
+        SuccessBottomSheetDialog.newInstance().showBottomSheet(
+            this.supportFragmentManager,
+            SuccessBottomSheetDialog::class.java.name
+        )
     }
 
     private fun showQRCodeErrorDialog() {

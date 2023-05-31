@@ -34,7 +34,7 @@ import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
-import pucaberta.pucminas.presentation.ui.bottomsheet.BaseBottomSheetDialog
+import pucaberta.pucminas.presentation.ui.bottomsheet.RegisterBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
 class MapActivity : AppCompatActivity(),
@@ -250,12 +250,12 @@ class MapActivity : AppCompatActivity(),
     }
 
     private fun openQrBottomSheet() {
-        BaseBottomSheetDialog.newInstance(
+        RegisterBottomSheetDialog.newInstance(
             R.string.qr_code_hint_description,
             BottomSheetTypeEnum.QRCODE.name
         ).showBottomSheet(
             this.supportFragmentManager,
-            BaseBottomSheetDialog::class.java.name
+            RegisterBottomSheetDialog::class.java.name
         )
     }
 

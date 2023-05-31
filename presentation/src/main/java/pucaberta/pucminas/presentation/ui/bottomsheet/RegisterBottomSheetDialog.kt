@@ -14,9 +14,9 @@ import models.BottomSheetTypeEnum
 import org.koin.android.ext.android.inject
 import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
-import pucaberta.pucminas.presentation.databinding.QrCodeBottomSheetBinding
+import pucaberta.pucminas.presentation.databinding.BaseBottomSheetBinding
 
-class BaseBottomSheetDialog : BottomSheetDialogFragment() {
+class RegisterBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val finishEvent: BottomSheetFinishEvent by inject()
 
@@ -28,18 +28,18 @@ class BaseBottomSheetDialog : BottomSheetDialogFragment() {
         arguments?.getString(LOTTIE_KEY)
     }
 
-    private lateinit var binding: QrCodeBottomSheetBinding
+    private lateinit var binding: BaseBottomSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = QrCodeBottomSheetBinding.inflate(inflater, container, false)
+        binding = BaseBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnQrCode.setOnClickListener {
+        binding.btnPrimary.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 lottieKey?.let { finishEvent.trigger(it) }
                 this.cancel()
@@ -52,11 +52,11 @@ class BaseBottomSheetDialog : BottomSheetDialogFragment() {
             binding.animationView.isVisible = true
             when (it) {
                 BottomSheetTypeEnum.QRCODE.name -> {
-                    binding.btnQrCode.setText(R.string.read_qr_code_button_text)
+                    binding.btnPrimary.setText(R.string.read_qr_code_button_text)
                     binding.animationView.setAnimation(R.raw.qr_code_lottie)
                 }
                 BottomSheetTypeEnum.GEOLOCATION.name -> {
-                    binding.btnQrCode.setText(R.string.geolocation_button_text)
+                    binding.btnPrimary.setText(R.string.geolocation_button_text)
                     binding.animationView.setAnimation(R.raw.location_lottie)
                 }
             }
@@ -70,8 +70,8 @@ class BaseBottomSheetDialog : BottomSheetDialogFragment() {
         private const val DESCRIPTION = "DESCRIPTION"
         private const val LOTTIE_KEY = "LOTTIE_KEY"
 
-        fun newInstance(descriptionId: Int, lottieKey: String): BaseBottomSheetDialog {
-            return BaseBottomSheetDialog().apply {
+        fun newInstance(descriptionId: Int, lottieKey: String): RegisterBottomSheetDialog {
+            return RegisterBottomSheetDialog().apply {
                 arguments = Bundle().apply {
                     putInt(DESCRIPTION, descriptionId)
                     putString(LOTTIE_KEY, lottieKey)

@@ -2,5 +2,6 @@ package models
 
 enum class BottomSheetTypeEnum {
     QRCODE,
-    GEOLOCATION
+    GEOLOCATION,
+    SUCCESS
 }
