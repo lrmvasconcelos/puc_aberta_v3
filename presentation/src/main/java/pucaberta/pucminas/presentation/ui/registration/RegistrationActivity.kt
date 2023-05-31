@@ -15,7 +15,10 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.journeyapps.barcodescanner.ScanOptions
+import models.BottomSheetTypeEnum
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import pucaberta.pucminas.core.*
 import pucaberta.pucminas.core.PermissionUtils.LOCATION_PERMISSION_REQUEST_CODE
 import pucaberta.pucminas.core.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
 import pucaberta.pucminas.core.PermissionUtils.enableMyLocation
@@ -23,11 +26,10 @@ import pucaberta.pucminas.core.PermissionUtils.isGPSEnabled
 import pucaberta.pucminas.core.PermissionUtils.isPermissionGranted
 import pucaberta.pucminas.core.camera.QRCodeActivity
 import pucaberta.pucminas.core.camera.setupQrCodeScanner
-import pucaberta.pucminas.core.clickWithDebounce
-import pucaberta.pucminas.core.startWithAnimation
-import pucaberta.pucminas.core.viewBinding
+import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.RegistrationActivityBinding
+import pucaberta.pucminas.presentation.ui.bottomsheet.BaseBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.MapActivity
 import utils.DISTANCE_FACTOR
 import utils.RECEPTION_LOCATION
@@ -43,6 +45,8 @@ class RegistrationActivity : AppCompatActivity(),
 
     private val viewModel: RegistrationViewModel by viewModel()
 
+    private val finishEvent: BottomSheetFinishEvent by inject()
+
     private val binding: RegistrationActivityBinding by viewBinding(
         RegistrationActivityBinding::inflate
     )
@@ -50,28 +54,48 @@ class RegistrationActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        supportActionBar?.hide()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setupObservers()
         configQrScanner()
         setupClicks()
     }
 
+    private fun setupObservers() {
+        observeEvent(finishEvent.finishFlow) {
+            when(it){
+                BottomSheetTypeEnum.QRCODE.name ->  scanCode()
+                BottomSheetTypeEnum.GEOLOCATION.name -> checkLocationRequirements()
+            }
+        }
+    }
+
     private fun configQrScanner() {
         qrCodeScanner = setupQrCodeScanner {
-            if (it.contents.equals(CONFIRMATION_KEY)) {
-                showWelcomeDialog()
-            } else {
-                showQRCodeErrorDialog()
+            if (it.contents != null) {
+                if (it.contents.equals(CONFIRMATION_KEY)) {
+                    showWelcomeDialog()
+                } else {
+                    showQRCodeErrorDialog()
+                }
             }
         }
     }
 
     private fun setupClicks() {
         binding.btnGeolocation.clickWithDebounce {
-            checkLocationRequirements()
+            openBottomSheet(R.string.geo_register_hint_description, BottomSheetTypeEnum.GEOLOCATION.name)
         }
         binding.btnQrCode.setOnClickListener {
-            scanCode()
+            openBottomSheet(R.string.qr_code_register_hint_description, BottomSheetTypeEnum.QRCODE.name)
         }
+    }
+
+    private fun openBottomSheet(descriptionID: Int, lottieKey: String) {
+        BaseBottomSheetDialog.newInstance(descriptionID, lottieKey).showBottomSheet(
+            this.supportFragmentManager,
+            BaseBottomSheetDialog::class.java.name
+        )
     }
 
     private fun checkLocationRequirements() {
@@ -81,35 +105,25 @@ class RegistrationActivity : AppCompatActivity(),
             }
         } else {
             Toast.makeText(
-                this,
-                this.resources.getString(R.string.gps_disable_message),
-                Toast.LENGTH_SHORT
+                this, this.resources.getString(R.string.gps_disable_message), Toast.LENGTH_SHORT
             ).show()
         }
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             super.onRequestPermissionsResult(
-                requestCode,
-                permissions,
-                grantResults
+                requestCode, permissions, grantResults
             )
             return
         }
 
         if (isPermissionGranted(
-                permissions,
-                grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION
             ) || isPermissionGranted(
-                permissions,
-                grantResults,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                permissions, grantResults, Manifest.permission.ACCESS_COARSE_LOCATION
             )
         ) {
             getMyCurrentLocation()
@@ -121,15 +135,14 @@ class RegistrationActivity : AppCompatActivity(),
 
     @SuppressLint("MissingPermission")
     private fun getMyCurrentLocation() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null && location.distanceTo(RECEPTION_LOCATION) <= DISTANCE_FACTOR) {
-                    showWelcomeDialog()
-                } else {
-                    Log.d("Teste", "Error")
-                    //TODO() Modal de erro
-                }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null && location.distanceTo(RECEPTION_LOCATION) <= DISTANCE_FACTOR) {
+                showWelcomeDialog()
+            } else {
+                Log.d("Teste", "Error")
+                //TODO() Modal de erro
             }
+        }
     }
 
     private fun showMissingPermissionError() {

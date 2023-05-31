@@ -2,7 +2,6 @@ package pucaberta.pucminas.presentation.ui.map
 
 import android.Manifest
 import android.animation.Animator
-import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -21,6 +20,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.journeyapps.barcodescanner.ScanOptions
+import models.BottomSheetTypeEnum
 import models.MarkLocation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,7 +34,7 @@ import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
-import pucaberta.pucminas.presentation.ui.bottomsheet.QrCodeBottomSheetDialog
+import pucaberta.pucminas.presentation.ui.bottomsheet.BaseBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
 class MapActivity : AppCompatActivity(),
@@ -85,7 +85,11 @@ class MapActivity : AppCompatActivity(),
 
     private fun configQrScanner() {
         qrCodeScanner = setupQrCodeScanner {
-            viewModel.processQrCodeResult(it.contents)
+            if (it.contents != null) {
+                viewModel.processQrCodeResult(it.contents)
+            } else {
+
+            }
         }
     }
 
@@ -246,9 +250,12 @@ class MapActivity : AppCompatActivity(),
     }
 
     private fun openQrBottomSheet() {
-        QrCodeBottomSheetDialog.newInstance().showBottomSheet(
+        BaseBottomSheetDialog.newInstance(
+            R.string.qr_code_hint_description,
+            BottomSheetTypeEnum.QRCODE.name
+        ).showBottomSheet(
             this.supportFragmentManager,
-            QrCodeBottomSheetDialog::class.java.name
+            BaseBottomSheetDialog::class.java.name
         )
     }
 
