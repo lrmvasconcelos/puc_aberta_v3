@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -38,8 +39,7 @@ import pucaberta.pucminas.presentation.ui.bottomsheet.RegisterBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
 class MapActivity : AppCompatActivity(),
-    GoogleMap.OnMyLocationButtonClickListener,
-    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback,
+    GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback,
     ActivityCompat.OnRequestPermissionsResultCallback {
 
     private var permissionDenied = false
@@ -76,7 +76,7 @@ class MapActivity : AppCompatActivity(),
     private fun setupComponents() {
         with(binding) {
             scoreSeekBar.isTouchListenerEnabled = false
-            qrCodeButton.clickWithDebounce {
+            clButton.clickWithDebounce {
                 openQrBottomSheet()
             }
         }
@@ -87,27 +87,12 @@ class MapActivity : AppCompatActivity(),
         qrCodeScanner = setupQrCodeScanner {
             if (it.contents != null) {
                 viewModel.processQrCodeResult(it.contents)
-            } else {
-
             }
         }
     }
 
     private fun animateComponents() = with(binding) {
         actvScore.startAnimation(shakeAnimation)
-        animationView.isVisible = true
-        animationView.playAnimation()
-        animationView.repeatCount = 2
-        animationView.addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {}
-            override fun onAnimationEnd(animation: Animator) {
-                animationView.isVisible = false
-            }
-
-            override fun onAnimationCancel(animation: Animator) {}
-            override fun onAnimationRepeat(animation: Animator) {}
-        })
-
     }
 
     private fun scanCode() {
@@ -130,6 +115,10 @@ class MapActivity : AppCompatActivity(),
 
         observe(userLevel) {
             setUserLevel(it)
+        }
+
+        observe(changeButton) {
+            changeLottieAnimation()
         }
 
         observeEvent(finishEvent.finishFlow) {
@@ -159,13 +148,12 @@ class MapActivity : AppCompatActivity(),
             isIndoorEnabled = true
             uiSettings.isZoomControlsEnabled = false
             setOnMyLocationButtonClickListener(this@MapActivity)
-            setOnMyLocationClickListener(this@MapActivity)
             setOnInfoWindowClickListener {
                 viewModel.onMarkerClick(it)
             }
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
-        enableMyLocation()
+//        enableMyLocation()
         viewModel.loadAllMarks()
     }
 
@@ -185,11 +173,6 @@ class MapActivity : AppCompatActivity(),
             ).show()
         }
         return false
-    }
-
-    override fun onMyLocationClick(location: Location) {
-        Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
-            .show()
     }
 
     @SuppressLint("MissingPermission")
@@ -267,6 +250,11 @@ class MapActivity : AppCompatActivity(),
                 animateComponents()
             }
         }
+    }
+
+    private fun changeLottieAnimation() = with(binding) {
+        lottieGift.setAnimation(R.raw.giftbox)
+        animationView.isVisible = true
     }
 
     companion object {

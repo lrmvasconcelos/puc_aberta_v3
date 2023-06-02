@@ -31,6 +31,9 @@ class MapViewModel(
     private val _userLevel: MutableLiveData<Int> = MutableLiveData()
     val userLevel: LiveData<Int> get() = _userLevel
 
+    private val _changeButton: MutableLiveData<Unit> = MutableLiveData()
+    val changeButton: LiveData<Unit> get() = _changeButton
+
     var isAnimationEnabled = false
 
     val reception = RECEPTION_LOCATION.run {
@@ -46,7 +49,15 @@ class MapViewModel(
     }
 
     fun getUserScore() {
-        _userLevel.value = getUserScoreInteractor().size
+        val score = getUserScoreInteractor().size
+        processUserScore(score)
+        _userLevel.value = score
+    }
+
+    private fun processUserScore(score: Int) {
+        if (score == MAX_SCORE) {
+            _changeButton.value = Unit
+        }
     }
 
     fun processQrCodeResult(result: String) {
@@ -110,5 +121,9 @@ class MapViewModel(
         }
 
         updateCommonLocationsInteractor(commonLocations)
+    }
+
+    companion object {
+        private const val MAX_SCORE = 3
     }
 }

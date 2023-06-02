@@ -44,7 +44,7 @@
         android:gravity="center"
         android:text="@string/register_screen_confirmation_success_description"
         android:textColor="@color/primaryColor"
-        android:textSize="24sp"
+        android:textSize="12sp"
         app:fontFamily="@font/roboto_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
