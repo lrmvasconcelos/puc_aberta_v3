@@ -51,7 +51,10 @@ class CustomInfoWindowAdapter(
         }
 
         // Set the title and snippet for the custom info window
-        binding.title.text = marker.title
+        markers.find { marker.zIndex == it.id.toFloat() }?.markTitle?.let {
+            binding.title.isVisible = true
+            binding.title.text = it
+        }
 
         if (hasToShowQrCode) {
             binding.snippet.apply {
