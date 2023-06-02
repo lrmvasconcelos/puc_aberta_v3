@@ -97,8 +97,56 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clBottomMenu"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="@color/primaryColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actvEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/event_available"
+        android:drawableTint="@color/white"
+        android:gravity="center"
+        android:text="@string/events"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:fontFamily="@font/roboto_bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/clButton"
+        app:layout_constraintTop_toTopOf="@id/clBottomMenu" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/actvPucAberta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/event_available"
+        android:drawableTint="@color/white"
+        android:gravity="center"
+        android:text="@string/events"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:fontFamily="@font/roboto_bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/clButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/clBottomMenu" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/buttonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTint="@color/primaryColor"
+        android:gravity="center"
+        android:text="@string/qr_code"
+        android:textColor="@color/white"
+        android:drawableTop="@drawable/event_available"
+        android:textSize="12sp"
+        app:fontFamily="@font/roboto_bold"
+        app:layout_constraintTop_toTopOf="@id/clBottomMenu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

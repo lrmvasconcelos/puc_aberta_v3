@@ -15,8 +15,10 @@
     <string name="qr_code_register_hint_description">Posicione o Qr Code disponível na "Recepção" dentro da área demarcada.\nAssim que estiver pronto clique no botão\n"Ler QR Code"</string>
     <string name="geo_register_hint_description">Fique uma distância de até 100 metros do local da "Recepção" para confirmar sua presença."</string>
     <string name="qr_code_hint_description">Posicione o Qr Code dentro da área demarcada.\nAssim que estiver pronto clique no botão\n"Ler QR Code"</string>
+    <string name="qr_code">Qr Code</string>
     <string name="qr_code_available_description">Qr Code Disponível. Clique para scanear</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="scoreboard">ScoreBoard</string>
+    <string name="scoreboard">Scoreboard</string>
+    <string name="events">Programação</string>
 </resources>
