@@ -25,4 +25,6 @@
     <string name="congratulations">Parabéns!\nVocê completou o desafio Puc Aberta 2023</string>
     <string name="congratulations_description">Diriga-se até oficina do grupo cadastrado que se encontra na "Feira de Cursos" para receber sua recompensa!</string>
     <string name="gift_avaiable">Recompensa disponível</string>
+    <string name="programming_title">Minha Programação</string>
+    <string name="complete_programming_title">Programação Completa</string>
 </resources>

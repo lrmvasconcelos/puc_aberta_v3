@@ -33,6 +33,7 @@ import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
 import pucaberta.pucminas.presentation.ui.bottomsheet.GiftBottomSheetDialog
+import pucaberta.pucminas.presentation.ui.bottomsheet.ProgrammingBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.bottomsheet.RegisterBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
@@ -74,6 +75,9 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListen
             scoreSeekBar.isTouchListenerEnabled = false
             clButton.clickWithDebounce {
                 viewModel.processButtonClick()
+            }
+            actvEvent.clickWithDebounce {
+                openProgrammingBottomSheet()
             }
         }
         configQrScanner()
@@ -257,6 +261,11 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListen
                     .bearing(310.toFloat()).zoom(18.toFloat()).build()
             )
         )
+    }
+
+    private fun openProgrammingBottomSheet(){
+        ProgrammingBottomSheetDialog.newInstance()
+            .showBottomSheet(this.supportFragmentManager, ProgrammingBottomSheetDialog::class.java.name)
     }
 
     companion object {
