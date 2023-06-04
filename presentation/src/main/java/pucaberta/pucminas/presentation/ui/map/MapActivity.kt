@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -78,6 +79,9 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListen
             }
             actvEvent.clickWithDebounce {
                 openProgrammingBottomSheet()
+            }
+            actvPuc.clickWithDebounce {
+                openPucMinasWebsite()
             }
         }
         configQrScanner()
@@ -266,6 +270,16 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListen
     private fun openProgrammingBottomSheet(){
         ProgrammingBottomSheetDialog.newInstance()
             .showBottomSheet(this.supportFragmentManager, ProgrammingBottomSheetDialog::class.java.name)
+    }
+
+    private fun openPucMinasWebsite(){
+        val uri = Uri.parse("https://www.pucminas.br/MundoPUCMinas/Paginas/Instituto.aspx?institutoID=0d2d7e4db-c442-4db0-89d0-09349063b067")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        if (intent.resolveActivity(packageManager) == null) {
+            intent.data =
+                Uri.parse("https://www.pucminas.br/MundoPUCMinas/Paginas/Instituto.aspx?institutoID=0d2d7e4db-c442-4db0-89d0-09349063b067")
+        }
+        this.startActivity(intent)
     }
 
     companion object {

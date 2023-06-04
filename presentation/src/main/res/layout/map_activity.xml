@@ -120,13 +120,13 @@
         app:layout_constraintTop_toTopOf="@id/clBottomMenu" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/actvPucAberta"
+        android:id="@+id/actvPuc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/event_available"
+        android:drawableTop="@drawable/school"
         android:drawableTint="@color/white"
         android:gravity="center"
-        android:text="@string/events"
+        android:text="@string/instituto"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:fontFamily="@font/roboto_bold"
