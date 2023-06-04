@@ -1,11 +1,9 @@
 package pucaberta.pucminas.presentation.ui.map
 
 import android.Manifest
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -13,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -35,12 +32,12 @@ import pucaberta.pucminas.core.event.BottomSheetFinishEvent
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.MapActivityBinding
 import pucaberta.pucminas.presentation.mapper.toMarkerOptionsList
+import pucaberta.pucminas.presentation.ui.bottomsheet.GiftBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.bottomsheet.RegisterBottomSheetDialog
 import pucaberta.pucminas.presentation.ui.map.adapter.CustomInfoWindowAdapter
 
-class MapActivity : AppCompatActivity(),
-    GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback,
-    ActivityCompat.OnRequestPermissionsResultCallback {
+class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListener,
+    OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private var permissionDenied = false
     private lateinit var map: GoogleMap
@@ -66,8 +63,7 @@ class MapActivity : AppCompatActivity(),
         }
         setContentView(binding.root)
         setupComponents()
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
         setupObservers()
         viewModel.getUserScore()
@@ -77,7 +73,7 @@ class MapActivity : AppCompatActivity(),
         with(binding) {
             scoreSeekBar.isTouchListenerEnabled = false
             clButton.clickWithDebounce {
-                openQrBottomSheet()
+                viewModel.processButtonClick()
             }
         }
         configQrScanner()
@@ -117,12 +113,17 @@ class MapActivity : AppCompatActivity(),
             setUserLevel(it)
         }
 
-        observe(changeButton) {
-            changeLottieAnimation()
+        observe(successState) {
+            showSuccessBottomSheet()
         }
 
         observeEvent(finishEvent.finishFlow) {
-            scanCode()
+            when (it) {
+                BottomSheetTypeEnum.GIFT.name -> {
+                    moveCameraToFair()
+                }
+                BottomSheetTypeEnum.QRCODE.name -> scanCode()
+            }
         }
     }
 
@@ -131,7 +132,8 @@ class MapActivity : AppCompatActivity(),
         map.setInfoWindowAdapter(
             CustomInfoWindowAdapter(
                 context = this@MapActivity,
-                markers = markers
+                markers = markers,
+                isChallangeComplete = viewModel.isChallengeCompleted
             )
         )
 
@@ -149,7 +151,7 @@ class MapActivity : AppCompatActivity(),
             uiSettings.isZoomControlsEnabled = false
             setOnMyLocationButtonClickListener(this@MapActivity)
             setOnInfoWindowClickListener {
-                viewModel.onMarkerClick(it)
+                viewModel.onMarkerClick()
             }
             moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(this)))
         }
@@ -157,19 +159,14 @@ class MapActivity : AppCompatActivity(),
         viewModel.loadAllMarks()
     }
 
-    private fun getCameraPosition(googleMap: GoogleMap) = CameraPosition
-        .builder(googleMap.cameraPosition)
-        .target(viewModel.reception)
-        .bearing(310.toFloat())
-        .zoom(17.toFloat())
-        .build()
+    private fun getCameraPosition(googleMap: GoogleMap) =
+        CameraPosition.builder(googleMap.cameraPosition).target(viewModel.reception)
+            .bearing(310.toFloat()).zoom(17.toFloat()).build()
 
     override fun onMyLocationButtonClick(): Boolean {
         if (!isGPSEnabled(this)) {
             Toast.makeText(
-                this,
-                this.resources.getString(R.string.gps_disable_message),
-                Toast.LENGTH_SHORT
+                this, this.resources.getString(R.string.gps_disable_message), Toast.LENGTH_SHORT
             ).show()
         }
         return false
@@ -194,27 +191,19 @@ class MapActivity : AppCompatActivity(),
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         if (requestCode != PermissionUtils.LOCATION_PERMISSION_REQUEST_CODE) {
             super.onRequestPermissionsResult(
-                requestCode,
-                permissions,
-                grantResults
+                requestCode, permissions, grantResults
             )
             return
         }
 
         if (isPermissionGranted(
-                permissions,
-                grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION
             ) || isPermissionGranted(
-                permissions,
-                grantResults,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                permissions, grantResults, Manifest.permission.ACCESS_COARSE_LOCATION
             )
         ) {
             // Enable the my location layer if the permission has been granted.
@@ -234,11 +223,9 @@ class MapActivity : AppCompatActivity(),
 
     private fun openQrBottomSheet() {
         RegisterBottomSheetDialog.newInstance(
-            R.string.qr_code_hint_description,
-            BottomSheetTypeEnum.QRCODE.name
+            R.string.qr_code_hint_description, BottomSheetTypeEnum.QRCODE.name
         ).showBottomSheet(
-            this.supportFragmentManager,
-            RegisterBottomSheetDialog::class.java.name
+            this.supportFragmentManager, RegisterBottomSheetDialog::class.java.name
         )
     }
 
@@ -252,9 +239,24 @@ class MapActivity : AppCompatActivity(),
         }
     }
 
+    private fun showSuccessBottomSheet() {
+        GiftBottomSheetDialog.newInstance()
+            .showBottomSheet(this.supportFragmentManager, GiftBottomSheetDialog::class.java.name)
+        changeLottieAnimation()
+    }
+
     private fun changeLottieAnimation() = with(binding) {
         lottieGift.setAnimation(R.raw.giftbox)
         animationView.isVisible = true
+    }
+
+    private fun moveCameraToFair() {
+        map.moveCamera(
+            CameraUpdateFactory.newCameraPosition(
+                CameraPosition.builder(map.cameraPosition).target(viewModel.fair)
+                    .bearing(310.toFloat()).zoom(18.toFloat()).build()
+            )
+        )
     }
 
     companion object {

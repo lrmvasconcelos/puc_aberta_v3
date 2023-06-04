@@ -10,14 +10,22 @@ import models.LocationType
 import models.MarkLocation
 import pucaberta.pucminas.presentation.R
 import pucaberta.pucminas.presentation.databinding.CustomInfoContentsBinding
+import pucaberta.pucminas.presentation.databinding.GiftInfoContentsBinding
 
 class CustomInfoWindowAdapter(
     context: Context,
-    private val markers: List<MarkLocation>
+    private val markers: List<MarkLocation>,
+    private val isChallangeComplete: Boolean
 ) : GoogleMap.InfoWindowAdapter {
 
     private val binding: CustomInfoContentsBinding by lazy {
         CustomInfoContentsBinding.inflate(
+            LayoutInflater.from(context)
+        )
+    }
+
+    private val bindingGift: GiftInfoContentsBinding by lazy {
+        GiftInfoContentsBinding.inflate(
             LayoutInflater.from(context)
         )
     }
@@ -28,8 +36,11 @@ class CustomInfoWindowAdapter(
 
     override fun getInfoContents(marker: Marker): View? {
         val tempMarker = markers.firstOrNull { marker.zIndex == it.id.toFloat() }
-        return when (tempMarker?.locationType) {
-            LocationType.RECEPTIVO -> null
+        return when {
+            tempMarker?.locationType == LocationType.RECEPTIVO -> null
+            tempMarker?.locationType == LocationType.FEIRA_CURSOS && isChallangeComplete -> {
+                bindingGift.root
+            }
             else -> {
                 render(marker)
                 binding.root

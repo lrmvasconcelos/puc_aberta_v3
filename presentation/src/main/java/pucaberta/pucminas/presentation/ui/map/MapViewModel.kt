@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.Marker
 import interactor.*
 import models.LocationType
 import models.MarkLocation
+import utils.FAIR_LOCATION
 import utils.RECEPTION_LOCATION
 
 class MapViewModel(
@@ -25,18 +26,24 @@ class MapViewModel(
     private val _allMarks: MutableLiveData<List<MarkLocation>> = MutableLiveData()
     val allMarks: LiveData<List<MarkLocation>> get() = _allMarks
 
-    private val _openQrCodeBottomSheet: MutableLiveData<Float> = MutableLiveData()
-    val openQrCodeBottomSheet: LiveData<Float> get() = _openQrCodeBottomSheet
+    private val _openQrCodeBottomSheet: MutableLiveData<Unit> = MutableLiveData()
+    val openQrCodeBottomSheet: LiveData<Unit> get() = _openQrCodeBottomSheet
 
     private val _userLevel: MutableLiveData<Int> = MutableLiveData()
     val userLevel: LiveData<Int> get() = _userLevel
 
-    private val _changeButton: MutableLiveData<Unit> = MutableLiveData()
-    val changeButton: LiveData<Unit> get() = _changeButton
+    private val _successState: MutableLiveData<Unit> = MutableLiveData()
+    val successState: LiveData<Unit> get() = _successState
 
     var isAnimationEnabled = false
 
+    var isChallengeCompleted = false
+
     val reception = RECEPTION_LOCATION.run {
+        LatLng(this.latitude, this.longitude)
+    }
+
+    val fair = FAIR_LOCATION.run {
         LatLng(this.latitude, this.longitude)
     }
 
@@ -44,8 +51,18 @@ class MapViewModel(
         _allMarks.value = getAllLocationsInteractor()
     }
 
-    fun onMarkerClick(marker: Marker) {
-        _openQrCodeBottomSheet.value = marker.zIndex
+    fun onMarkerClick() {
+        if (isChallengeCompleted.not()) {
+            _openQrCodeBottomSheet.value = Unit
+        }
+    }
+
+    fun processButtonClick() {
+        if (isChallengeCompleted) {
+            _successState.value = Unit
+        } else {
+            _openQrCodeBottomSheet.value = Unit
+        }
     }
 
     fun getUserScore() {
@@ -56,7 +73,8 @@ class MapViewModel(
 
     private fun processUserScore(score: Int) {
         if (score == MAX_SCORE) {
-            _changeButton.value = Unit
+            isChallengeCompleted = true
+            _successState.value = Unit
         }
     }
 

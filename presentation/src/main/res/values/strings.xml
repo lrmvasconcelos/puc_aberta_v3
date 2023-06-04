@@ -3,6 +3,7 @@
     <string name="qr_code_button_text">QR Code</string>
     <string name="read_qr_code_button_text">Ler QR Code</string>
     <string name="puc_aberta_map_button_text">Abrir Mapa Puc Aberta</string>
+    <string name="continuar_button_text">Continuar</string>
     <string name="geolocation_button_text">Entendi</string>
     <string name="location_button_text">Geolocalização</string>
     <string name="register_screen_confirmation_text">Confirme sua presença utilizando uma das opções abaixo:</string>
@@ -21,4 +22,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="scoreboard">Scoreboard</string>
     <string name="events">Programação</string>
+    <string name="congratulations">Parabéns!\nVocê completou o desafio Puc Aberta 2023</string>
+    <string name="congratulations_description">Diriga-se até oficina do grupo cadastrado que se encontra na "Feira de Cursos" para receber sua recompensa!</string>
+    <string name="gift_avaiable">Recompensa disponível</string>
 </resources>
