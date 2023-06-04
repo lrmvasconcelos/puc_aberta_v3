@@ -83,6 +83,9 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListen
             actvPuc.clickWithDebounce {
                 openPucMinasWebsite()
             }
+            cardVR.clickWithDebounce {
+                openVirtualTour()
+            }
         }
         configQrScanner()
     }
@@ -267,17 +270,32 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnMyLocationButtonClickListen
         )
     }
 
-    private fun openProgrammingBottomSheet(){
+    private fun openProgrammingBottomSheet() {
         ProgrammingBottomSheetDialog.newInstance()
-            .showBottomSheet(this.supportFragmentManager, ProgrammingBottomSheetDialog::class.java.name)
+            .showBottomSheet(
+                this.supportFragmentManager,
+                ProgrammingBottomSheetDialog::class.java.name
+            )
     }
 
-    private fun openPucMinasWebsite(){
-        val uri = Uri.parse("https://www.pucminas.br/MundoPUCMinas/Paginas/Instituto.aspx?institutoID=0d2d7e4db-c442-4db0-89d0-09349063b067")
+    private fun openPucMinasWebsite() {
+        val uri =
+            Uri.parse("https://www.pucminas.br/MundoPUCMinas/Paginas/Instituto.aspx?institutoID=0d2d7e4db-c442-4db0-89d0-09349063b067")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         if (intent.resolveActivity(packageManager) == null) {
             intent.data =
                 Uri.parse("https://www.pucminas.br/MundoPUCMinas/Paginas/Instituto.aspx?institutoID=0d2d7e4db-c442-4db0-89d0-09349063b067")
+        }
+        this.startActivity(intent)
+    }
+
+    private fun openVirtualTour() {
+        val uri =
+            Uri.parse("https://kuula.co/share/Np5cC/collection/7kDK4?logo=1&info=0&logosize=118&fs=1&vr=1&sd=1&thumbs=1&margin=18&inst=pt&keys=0")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        if (intent.resolveActivity(packageManager) == null) {
+            intent.data =
+                Uri.parse("https://kuula.co/share/Np5cC/collection/7kDK4?logo=1&info=0&logosize=118&fs=1&vr=1&sd=1&thumbs=1&margin=18&inst=pt&keys=0")
         }
         this.startActivity(intent)
     }
