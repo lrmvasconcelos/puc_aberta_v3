@@ -106,7 +106,7 @@ class MapViewModel(
             LocationType.INSTITUTOS, LocationType.AUDITORIOS -> {
                 updateIceiLocation(locationType)
             }
-            LocationType.RECEPTIVO, LocationType.FEIRA_CURSOS -> {
+            LocationType.RECEPTIVO, LocationType.FEIRA_CURSOS, LocationType.CANTINA -> {
                 updateCommonsLocation(locationType)
             }
         }

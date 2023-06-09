@@ -37,7 +37,7 @@ class CustomInfoWindowAdapter(
     override fun getInfoContents(marker: Marker): View? {
         val tempMarker = markers.firstOrNull { marker.zIndex == it.id.toFloat() }
         return when {
-            tempMarker?.locationType == LocationType.RECEPTIVO -> null
+            tempMarker?.locationType == LocationType.RECEPTIVO || tempMarker?.locationType == LocationType.CANTINA -> null
             tempMarker?.locationType == LocationType.FEIRA_CURSOS && isChallangeComplete -> {
                 bindingGift.root
             }

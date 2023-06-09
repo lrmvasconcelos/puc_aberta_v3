@@ -25,6 +25,7 @@ private fun MarkLocation.toMarkerOptions(): MarkerOptions {
 internal fun LocationType.getIconRes() = when (this) {
     LocationType.RECEPTIVO -> R.drawable.ic_receptivo
     LocationType.FEIRA_CURSOS -> R.drawable.ic_feira_de_cursos
+    LocationType.CANTINA -> R.drawable.ic_cantinas
     LocationType.INSTITUTOS -> R.drawable.ic_institutos_e_faculdades
     LocationType.AUDITORIOS -> R.drawable.ic_auditorios
 }

@@ -30,5 +30,9 @@ enum class LocationType(type: String) {
     INSTITUTOS("INSTITUTOS"),
 
     @SerializedName("AUDITORIOS")
-    AUDITORIOS("AUDITORIOS")
+    AUDITORIOS("AUDITORIOS"),
+
+    @SerializedName("CANTINA")
+    CANTINA("CANTINACANTINA")
+
 }

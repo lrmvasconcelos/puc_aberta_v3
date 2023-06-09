@@ -12,5 +12,40 @@
         "tipo": "FEIRA_CURSOS",
         "id": 1,
         "mostrarQrCode": true 
+    },
+    {
+        "latitude": -19.923973,
+        "longitude": -43.993499,
+        "titulo": "Cantina Sinhazinha",
+        "tipo": "CANTINA",
+        "id": 2
+    },
+    {
+        "latitude": -19.923878,
+        "longitude": -43.994025,
+        "titulo": "Trailer de Lanches",
+        "tipo": "CANTINA",
+        "id": 3
+    },
+    {
+        "latitude": -19.923375,
+        "longitude": -43.993772,
+        "titulo": "Cantina Divin Gout",
+        "tipo": "CANTINA",
+        "id": 4
+    },
+    {
+        "latitude": -19.922603,
+        "longitude": -43.992991,
+        "titulo": "Cantina Shuffner",
+        "tipo": "CANTINA",
+        "id": 5
+    },
+    {
+        "latitude": -19.923024,
+        "longitude": -43.991382,
+        "titulo": "Cantina Sodexo",
+        "tipo": "CANTINA",
+        "id": 6
     }
 ]
